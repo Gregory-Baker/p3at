@@ -20,6 +20,7 @@ int control_frequency;
 float pid_gains[3];
 long ticksPerRev = 99650;
 int8_t command_mode =  0;
+unsigned long previousCmdTime;
 
 void commandCb(const p3at_msgs::Drive &drive_msg) {
   if (drive_msg.mode == 0) {
@@ -29,13 +30,11 @@ void commandCb(const p3at_msgs::Drive &drive_msg) {
   }
   else {
     command_mode = -1;
-    leftMotor->StopMotor();
-    rightMotor->StopMotor();
   }
-  
+  previousCmdTime = millis();
 }
 
-ros::Subscriber<p3at_msgs::Drive> sub("command", &commandCb);
+ros::Subscriber<p3at_msgs::Drive> sub("cmd_drive", &commandCb);
 
 
 IntervalTimer controlTimer;
@@ -108,8 +107,10 @@ void loop() {
     float battVoltage = teensy->ReadBattery();
 
     int8_t actual_mode;
+
+    unsigned long timeSinceCommand = millis() - previousCmdTime;
     
-    if (command_mode = 0 && battVoltage > 11.0) {      
+    if (timeSinceCommand < 500 && command_mode == 0 && battVoltage > 11.0) {      
       if (!leftMotor->pidOn) {
         teensy->LEDOn();
         leftMotor->PIDOn();
@@ -122,16 +123,18 @@ void loop() {
     else {
       if (leftMotor->pidOn) {
         leftMotor->PIDOff();
+        leftMotor->StopMotor();
       }
       if (rightMotor->pidOn) {
         rightMotor->PIDOff();
+        rightMotor->StopMotor();
       }
       actual_mode = -1;
     }
 
     msg.header.stamp = nh.now();
-    msg.drivers[0] = leftMotor->Update();
-    msg.drivers[1] = rightMotor->Update();
+    msg.drivers[p3at_msgs::Drive::LEFT] = leftMotor->Update();
+    msg.drivers[p3at_msgs::Drive::RIGHT] = rightMotor->Update();
     msg.commanded_mode = command_mode;
     msg.actual_mode = actual_mode;
 

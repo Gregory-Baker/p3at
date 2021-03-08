@@ -1,5 +1,5 @@
 <launch>
-  <arg name="p3at_port" default="/dev/p3at" />
+  <arg name="p3at_port" default="/dev/teensy" />
 
   <include file="$(find p3at_description)/launch/description.launch" />
 

@@ -19,8 +19,8 @@ const int REA = 5;            // Right encoder A
 const int REB = 4;            // Right encoder B
 const int LEB = 3;            // Left encoder B
 
-const int MEN = 21;           // Motor enable
-const int ESTOP = 20;         // E-Stop detect input
+const int MEN = 19;           // Motor enable
+const int ESTOP = 18;         // E-Stop detect input
 const int VBAT = A9;          // Battery Voltage
 
 /*  
@@ -70,12 +70,12 @@ void TeensyHW::initPins() {
 
 void TeensyHW::LEDOn() {
   ledState = HIGH;
-  digitalWrite(LED, HIGH);
+  digitalWrite(LED, ledState);
 }
 
 void TeensyHW::LEDOff() {
   ledState = LOW;
-  digitalWrite(LED, HIGH);
+  digitalWrite(LED, ledState);
 }
 
 void TeensyHW::LEDToggle() {

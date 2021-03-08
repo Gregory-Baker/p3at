@@ -86,7 +86,7 @@ void DCMotor::SetMotorDir(float val) {
     motor_direction = 1;
     digitalWrite(DIR_pin, wheelLR);
   }
-  else {
+  else if (val < 0) {
     motor_direction = -1;
     digitalWrite(DIR_pin, !wheelLR);
   }
