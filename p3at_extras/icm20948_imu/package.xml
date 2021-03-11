@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>icm20948_imu</name>
+  <version>0.0.0</version>
+  <description>Publish icm20948 imu data</description>
+
+  <maintainer email="gregory.baker@brl.ac.uk">Greg Baker</maintainer>
+  <license>BSD</license>
+  <url type="repository">https://github.com/Gregory-Baker/p3at</url> 
+  <author email="gregory.baker@brl.ac.uk">Greg Baker</author>
+
+  
+  <!--  Python package dependency of icm20948 not currently in rosdistro list-->
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  
+  
+
+  <export>
+  </export>
+</package>
