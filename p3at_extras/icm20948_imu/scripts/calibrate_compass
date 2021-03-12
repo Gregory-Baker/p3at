@@ -56,8 +56,7 @@ rosrun icm20948_imu compute_calibration $BAG_FILE $CAL_FILE &> /tmp/compute_outp
 if [[ "$?" != "0" ]]; then
   echo "Unable to compute calibration from recorded bag."
   echo "Output in /tmp/compute_output.log"
-  exit 1-rwxrwxr-x 1 greg greg 2907 Mar 12 12:36 compute_calibration
-
+  exit 1
 fi
 
 if [[ -r $CAL_FILE ]]; then

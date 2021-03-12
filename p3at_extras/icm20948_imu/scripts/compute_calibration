@@ -41,7 +41,7 @@ bag = rosbag.Bag(args.bag)
 
 vecs = []
 for topic, msg, time in bag.read_messages(topics=("/imu/mag",)):
-  vecs.append((float(msg.vector.x), float(msg.vector.y), float(msg.vector.z)))
+  vecs.append((float(msg.magnetic_field.x), float(msg.magnetic_field.y), float(msg.magnetic_field.z)))
 
 print ("Using " + str(len(vecs)) + " samples.")
 
@@ -78,7 +78,8 @@ with open(args.outfile, "w") as f:
 print("Calibration file written to " + args.outfile)
 
 if pyplot:
-  ax2 = fig.add_subplot(212, projection='3d')
+  fig = pyplot.figure(figsize=(10,10))
+  ax2 = fig.add_subplot(111, projection='3d')
   ax2.view_init(elev=80, azim=5)
   ax2.scatter(x, y, z)
   ax2.plot(*circle_points, c="red")
