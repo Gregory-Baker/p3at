@@ -1,35 +1,25 @@
 <?xml version="1.0"?>
 
+<!--Original version from amr-ros-config package: 
+https://github.com/MobileRobots/amr-ros-config/blob/master/description/urdf/pioneer3at.urdf.xacro
+
+Modifications:
+- Added include of p3at_customisation xacro file
+- Moved base_link inertial component to separate link (so KDL doesn't complain)
+- Added robot_namespace argument, used for Gazebo plugins
+-->
+
 <robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
        xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
        xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
        xmlns:xacro="http://ros.org/wiki/xacro"
 name="pioneer3at">
 
-	<link name="base_link">
-	</link>
-	<gazebo reference="base_link">
-	</gazebo>
-	
-<!-- Chassis -->
-	<link name="chassis">
+	<xacro:arg name="robot_namespace" default="/" />
 
-		<!--  For pointers on inertial and gazebo-related parameters see
-		       * http://wiki.ros.org/urdf/Tutorials/Adding%20Physical%20and%20Collision%20Properties%20to%20a%20URDF%20Model
-                       * http://answers.gazebosim.org/question/4372/the-inertia-matrix-explained/
-		       * http://gazebosim.org/tutorials?tut=inertia&cat=build_robot, and 
-                       * http://gazebosim.org/tutorials/?tut=ros_urdf
-                       * http://en.wikipedia.org/wiki/List_of_moment_of_inertia_tensors  
-                -->
-		<inertial>
-			<mass value="21.5"/> <!-- P3AT 18.6kg plus three batteries @ 2.4kg each  minus four wheels @ 1.4 kg ea and top plate @ 0.1 kg-->
-			<origin xyz="-0.1 0 0"/>
-			<inertia ixx="0.3338" ixy="0.0"     ixz="0.0"
-				              iyy="0.4783"  iyz="0.0"
-				                            izz="0.3338"/>
-		</inertial>
+	<link name="base_link">
 		<visual>
-			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<origin xyz="0 0 0.177" rpy="0 0 0"/>
 			<geometry name="pioneer_geom">
 				<mesh filename="package://p3at_description/meshes/p3at_meshes/chassis.stl"/>
 			</geometry>
@@ -38,20 +28,28 @@ name="pioneer3at">
 			</material>
 		</visual>
 		<collision>
-			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<origin xyz="0 0 0.177" rpy="0 0 0"/>
 				<geometry>
 					<mesh filename="package://p3at_description/meshes/p3at_meshes/chassis.stl"/>
 				</geometry>
 		</collision>
 	</link>
-	<gazebo reference="chassis">
+	<gazebo reference="base_link">
 		<material value="Gazebo/Red"/>
 	</gazebo>
-	<joint name="base_chassis_joint" type="fixed">
-		<origin xyz="0 0 0.177" rpy="0 0 0"/>
-		<parent link="base_link"/>
-		<child link="chassis"/>
-	</joint>
+
+	<link name="inertial_link">
+		<inertial>
+			<mass value="21.5"/> <!-- P3AT 18.6kg plus three batteries @ 2.4kg each  minus four wheels @ 1.4 kg ea and top plate @ 0.1 kg-->
+			<origin xyz="-0.1 0 0.177"/>
+			<inertia ixx="0.3338"	ixy="0.0" ixz="0.0" iyy="0.4783" iyz="0.0" izz="0.3338"/>
+		</inertial>
+	</link>
+  <joint name="inertial_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="inertial_link" />
+  </joint>
 
 <!-- Top -->
 	<link name="top_plate">
@@ -302,9 +300,7 @@ name="pioneer3at">
 		<inertial>
 			<mass value="1.2"/>	
 			<origin xyz="0 0 0"/>
-			<inertia ixx="0.012411765597" ixy="0" ixz="0"
-                                                      iyy="0.015218160428" iyz="0" 
-                                                                           izz="0.011763977943"/>
+			<inertia ixx="0.012411765597" ixy="0" ixz="0" iyy="0.015218160428" iyz="0" izz="0.011763977943"/>
       </inertial>
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0"/>
@@ -376,7 +372,7 @@ name="pioneer3at">
 <gazebo>
   <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
     <updateRate>100.0</updateRate>
-    <robotNamespace>sim_p3at</robotNamespace>
+    <robotNamespace>$(arg robot_namespace)</robotNamespace>
     <leftFrontJoint>p3at_front_left_wheel_joint</leftFrontJoint>
     <rightFrontJoint>p3at_front_right_wheel_joint</rightFrontJoint>
     <leftRearJoint>p3at_back_left_wheel_joint</leftRearJoint>
@@ -400,5 +396,6 @@ name="pioneer3at">
 <xacro:p3at_drive_side side="right" reflect="-1"/>
 <xacro:p3at_gazebo_ext/>
 
+<xacro:include filename="$(find p3at_description)/urdf/p3at_customisation.urdf.xacro"/>
 
 </robot>

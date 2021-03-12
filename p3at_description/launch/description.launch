@@ -1,5 +1,5 @@
 <launch>
   <param name="robot_description"
-         command="$(find xacro)/xacro $(find p3at_description)/urdf/pioneer3at.urdf.xacro --inorder" />
+         command="$(find xacro)/xacro $(find p3at_description)/urdf/p3at.urdf.xacro --inorder" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 </launch>

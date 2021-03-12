@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+Brief: Augment p3at.urdf.xacro base setup with support for custom components
+
+TODO:
+- Create environment variable for IMU xyz and rpy (see Husky/Jackal)
+-->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<xacro:property name="M_PI" value="3.1415927"/>
+
+	<xacro:macro name="imu" params="parent_link xyz rpy">
+
+		<link name="imu_link"/>
+		<joint name="imu_joint" type="fixed">
+			<origin xyz="${xyz}" rpy="${rpy}"/>
+			<parent link="${parent_link}" />
+			<child link="imu_link" />
+		</joint>
+		<gazebo reference="imu_link">
+		</gazebo>
+		
+		<!--In our IMU (ICM20948) the magnetometer frame is different to the gyro/accelerometer-->
+		<link name="mag_link"/>
+		<joint name="mag_joint" type="fixed">
+			<origin xyz="0 0 0" rpy="${M_PI} 0 0"/>
+			<parent link="imu_link" />
+			<child link="mag_link" />
+		</joint>
+		<gazebo reference="mag_link">
+		</gazebo>
+
+		<gazebo>
+			<plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
+				<robotNamespace>$(arg robot_namespace)</robotNamespace>
+				<updateRate>50.0</updateRate>
+				<bodyName>base_link</bodyName>
+				<topicName>imu/data</topicName>
+				<accelDrift>0.005 0.005 0.005</accelDrift>
+				<accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
+				<rateDrift>0.005 0.005 0.005 </rateDrift>
+				<rateGaussianNoise>0.005 0.005 0.005 </rateGaussianNoise>
+				<headingDrift>0.005</headingDrift>
+				<headingGaussianNoise>0.005</headingGaussianNoise>
+			</plugin>
+		</gazebo>
+
+	</xacro:macro>
+
+	<!--Made the parent the top_plate, because it's easier to measure from. However, this is not necessarily the most intuitive choice. -->
+	<xacro:imu parent_link="top_plate" xyz="-0.08 0.09 -0.03" rpy = "0 0 ${M_PI}"/>
+
+</robot>
