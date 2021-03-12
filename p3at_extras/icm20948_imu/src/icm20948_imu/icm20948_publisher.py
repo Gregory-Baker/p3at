@@ -18,8 +18,8 @@ def dps_to_radps(values):
 
 def publish_imu_data(freq):
 	rospy.init_node('icm20948', anonymous=True)
-	pub_imu = rospy.Publisher('icm20948/data_raw', Imu, queue_size=10)
-	pub_mag = rospy.Publisher('icm20948/mag', MagneticField, queue_size=10)
+	pub_imu = rospy.Publisher('imu/data_raw', Imu, queue_size=10)
+	pub_mag = rospy.Publisher('imu/mag', MagneticField, queue_size=10)
 	rate = rospy.Rate(freq)
 
 	while not rospy.is_shutdown():
@@ -34,7 +34,7 @@ def publish_imu_data(freq):
 		mag_msg.magnetic_field.z = mag_z
 		mag_msg.header.stamp = rospy.Time.now()
 		# TODO: Check if this frame_id is correct
-		mag_msg.header.frame_id = ("mag")
+		mag_msg.header.frame_id = ("mag_link")
 
 		pub_mag.publish(mag_msg)
 	
@@ -51,7 +51,7 @@ def publish_imu_data(freq):
 		imu_msg.angular_velocity.y = gy
 		imu_msg.angular_velocity.z = gz
 		imu_msg.header.stamp = rospy.Time.now()
-		imu_msg.header.frame_id = ("imu")
+		imu_msg.header.frame_id = ("imu_link")
 
 		pub_imu.publish(imu_msg)
 		rate.sleep()
