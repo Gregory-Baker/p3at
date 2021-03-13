@@ -1,0 +1,20 @@
+<launch>
+
+  <node pkg="icm20948_imu" type="icm20948_node" name="icm20948_node">
+    <rosparam>
+      rate: 50
+    </rosparam>
+  </node>
+  
+  <!-- Filter raw gyro data into a usable IMU message -->
+  <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter">
+    <rosparam file="$(find icm20948_imu)/config/mag_config.yaml" />
+    <rosparam>
+      gain: 0.1
+      zeta: 0.001
+      publish_tf: true
+      use_mag: false
+    </rosparam>
+  </node>
+
+</launch>

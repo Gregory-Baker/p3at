@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Script from jackal repo: https://github.com/jackal/jackal_robot/tree/melodic-devel/jackal_base/scripts
+# Script derived from Clearpath jackal repo: 
+# https://github.com/jackal/jackal_robot/tree/melodic-devel/jackal_base/scripts
 # 
 # Modifications:
 # - Changed jackal-specific paths to p3at ones
@@ -8,7 +9,8 @@
 TEMPDIR=$(mktemp -d --tmpdir calibrate_compass.XXXX)
 BAG_FILE=${TEMPDIR}/imu_record.bag
 CAL_FILE=${TEMPDIR}/mag_config.yaml
-CAL_FINAL_PATH=../config
+SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+CAL_FINAL_PATH=${SCRIPT_PATH}/../config
 DURATION=60
 
 ROSTOPIC_OUTPUT=$(rostopic list)

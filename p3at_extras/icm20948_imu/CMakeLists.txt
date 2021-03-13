@@ -20,6 +20,11 @@ catkin_install_python(PROGRAMS
 	DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(PROGRAMS scripts/compute_calibration
+install(DIRECTORY config launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
+install(PROGRAMS 
+  scripts/calibrate_compass
+  scripts/compute_calibration
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 

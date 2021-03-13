@@ -10,14 +10,13 @@
         publishers:
           - status
           - feedback
-          - imu/data_raw
-          - navsat/nmea_sentence
         subscribers:
           - cmd_drive
-          - wifi_connected
     </rosparam>
     <param name="port" value="$(arg p3at_port)" />
   </node>
+  
+  <!-- TODO: launch ICM20948 launch when stable-->
   
   <!-- Differential controller and basic localization -->
   <include file="$(find p3at_control)/launch/control.launch" />
