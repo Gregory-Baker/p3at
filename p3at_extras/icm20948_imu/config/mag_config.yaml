@@ -1,5 +1,5 @@
-# Generated from /tmp/calibrate_compass.WRi6/imu_record.bag on 2021-03-12.
+# Generated from /tmp/calibrate_compass.5a7L/imu_record.bag on 2021-03-13.
 use_mag: true
-mag_bias_x: -75.933758509
-mag_bias_y: -4.017261438
-mag_bias_z: -40.083050847
+mag_bias_x: -77.200943706
+mag_bias_y: 2.941422061
+mag_bias_z: 40.251944107
