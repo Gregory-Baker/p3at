@@ -17,6 +17,7 @@
   </node>
   
   <!-- TODO: launch ICM20948 launch when stable-->
+  <include file="$(find icm20948_imu)/launch/icm20948.launch" />
   
   <!-- Differential controller and basic localization -->
   <include file="$(find p3at_control)/launch/control.launch" />
