@@ -18,7 +18,7 @@ Code adapted from a variety of sources, but some main ones are:
 I am very grateful to the people that developed these and other fantastic open source resources. The world of robotics is undoubtedly a better place with you in it ;).
 
 ### My Method and Disclaimer:
-I am relatively new to ROS, and would consider myself a functional programmer, rather than a distinguised one. I have taken the learning-by-doing approach during this project. I therefore can't guarantee the efficiency or efficacy of any of my code. If you have any suggestions for improvements, then please drop them in the issues section of this repo or request a merge if you've implemented it yourself. If you have any other questions or ideas, then please feel free to email me at gregory.baker@brl.ac.uk.
+I am relatively new to ROS, and would consider myself a 'functional' programmer, rather than a 'meticulous' one (i.e. I will usually move-on from a bit of code once it works sufficiently well, rather than taking time to make it perfect and/or generic). I have taken the learning-by-doing approach during this project. I therefore can't guarantee the efficiency or efficacy of any of my code. If you have any suggestions for improvements, then please drop them in the issues section of this repo or request a merge if you've implemented something extra yourself. If you have any other questions or ideas, then please feel free to email me at gregory.baker@brl.ac.uk.
 
 ### Other Useful Resources:
 #### P3AT Docs:
