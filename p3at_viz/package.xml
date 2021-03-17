@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>p3at_viz</name>
+  <version>0.0.0</version>
+  <description>File for launching and configuring RVIZ with P3AT packages</description>
+
+  <maintainer email="gregory.baker@brl.ac.uk">Greg Baker</maintainer>
+  <license>BSD</license>
+  <url type="repository">https://github.com/Gregory-Baker/p3at</url> 
+  <author email="gregory.baker@brl.ac.uk">Greg Baker</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roslaunch</depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>p3at_description</exec_depend>
+  <exec_depend>rviz</exec_depend>
+
+  <export>
+  </export>
+</package>
