@@ -1,0 +1,79 @@
+#!/usr/bin/env python
+#
+# Author: Greg Baker (BRL)
+# License: BSD
+# 
+# Brief: Estimates variance of imu gyro and accel values using Welford online algorithm
+#	see https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
+
+import rospy
+import numpy as np
+import datetime
+from geometry_msgs.msg import Quaternion, Vector3
+from sensor_msgs.msg import Imu
+
+class IMU_variance_calculator:
+
+	def __init__(self, outfile_gyro, outfile_accel):
+		self.k = 0
+		self.l = 0
+		self.gyro_M = np.zeros(3)
+		self.gyro_S = np.zeros(3)
+		self.accel_M = np.zeros(3)
+		self.accel_S = np.zeros(3)
+		self.outfile_gyro = outfile_gyro
+		self.outfile_accel = outfile_accel
+
+	def callback(self, data):
+		self.k += 1
+		self.l += 1
+		gyro_data = np.array((data.angular_velocity.x, data.angular_velocity.y, data.angular_velocity.z))
+		accel_data = np.array((data.linear_acceleration.x, data.linear_acceleration.y, data.linear_acceleration.z))
+
+		gyro_delta = gyro_data - self.gyro_M
+		accel_delta = accel_data - self.accel_M
+
+		self.gyro_M += gyro_delta/self.k
+		self.accel_M += accel_delta/self.k
+
+		gyro_delta2 = gyro_data - self.gyro_M
+		accel_delta2 = accel_data - self.accel_M
+
+		self.gyro_S += np.multiply(gyro_delta, gyro_delta2)
+		self.accel_S += np.multiply(accel_delta, accel_delta2)
+
+		if (self.l % 1000 == 0):
+			self.l = 0
+			self.write_to_file()
+
+	def write_to_file(self):
+		with open(self.outfile_gyro, "ab") as f:
+			mean = self.gyro_M
+			var = self.gyro_S/(self.k-1)
+			np.savetxt(f, (mean, var))
+			f.write(b"\n")
+
+		with open(self.outfile_accel, "ab") as g:
+			mean = self.accel_M
+			var = self.accel_S/(self.k-1)
+			np.savetxt(g, (mean, var))
+			g.write(b"\n")
+
+
+	def listener(self):
+
+		rospy.init_node('imu_var_calc_node', anonymous=True)
+		rospy.Subscriber("/imu/data_raw", Imu, self.callback)
+		rospy.spin()
+
+if __name__ == '__main__':
+	try:
+		outfile_gyro = "/tmp/variance_gyro.out"
+		open(outfile_gyro, 'w').close()
+		outfile_accel = "/tmp/variance_accel.out"
+		open(outfile_accel, 'w').close()
+
+		m = IMU_variance_calculator(outfile_gyro, outfile_accel)
+		m.listener()
+	except rospy.ROSInterruptException:
+		raise e
