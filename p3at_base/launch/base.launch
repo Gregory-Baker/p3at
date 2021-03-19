@@ -16,7 +16,7 @@
     <param name="port" value="$(arg p3at_port)" />
   </node>
   
-  <!-- TODO: launch ICM20948 launch when stable-->
+  <!-- TODO: make accessories (e.g. IMU/Lidar/Cameras) options-->
   <include file="$(find icm20948_imu)/launch/icm20948.launch" />
   
   <!-- Differential controller and basic localization -->
