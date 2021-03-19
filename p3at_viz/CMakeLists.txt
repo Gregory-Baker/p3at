@@ -12,7 +12,7 @@ catkin_package()
 roslaunch_add_file_check(launch/view_model.launch)
 roslaunch_add_file_check(launch/view_robot.launch)
 
-install(FILES
+install(DIRECTORY
   launch
   rviz
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
