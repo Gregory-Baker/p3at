@@ -21,7 +21,7 @@ add_executable(p3at_node
   src/p3at_base.cpp
   src/p3at_hardware.cpp)
 target_link_libraries(p3at_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-#add_dependencies(p3at_node p3at_msgs_gencpp rosserial_msgs_gencpp)
+add_dependencies(p3at_node p3at_msgs_generate_messages_cpp)
 
 
 catkin_install_python(PROGRAMS
