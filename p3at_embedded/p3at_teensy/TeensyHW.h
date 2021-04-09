@@ -1,6 +1,7 @@
 #ifndef TEENSYHW_H
 #define TEENSYHW_H
 
+#define USE_USBCON
 #include <ros.h>
 #include <p3at_msgs/Status.h>
 
@@ -8,20 +9,20 @@ ros::NodeHandle nh;
 
 const int LED = 13;           // LED pin
 
-const int LPWM = 20;          // Left motor PWM
-const int RPWM = 21;          // Right motor PWM
+const int LPWM = 3;          // Left motor PWM
+const int RPWM = 4;          // Right motor PWM
 
-const int LDIR = 8;           // Left motor direction
-const int RDIR = 7;           // Right motor direction
+const int LDIR = 23;           // Left motor direction
+const int RDIR = 22;           // Right motor direction
 
-const int LEA = 6;            // Left encoder A
-const int REA = 5;            // Right encoder A
-const int REB = 4;            // Right encoder B
-const int LEB = 3;            // Left encoder B
+const int LEA = 21;            // Left encoder A
+const int REA = 20;            // Right encoder A
+const int REB = 19;            // Right encoder B
+const int LEB = 18;            // Left encoder B
 
-const int MEN = 19;           // Motor enable
-const int ESTOP = 18;         // E-Stop detect input
-const int VBAT = A9;          // Battery Voltage
+const int MEN = 10;           // Motor enable
+const int ESTOP = 11;         // E-Stop detect input
+const int VBAT = A1;          // Battery Voltage
 
 /*  
  *   Note: VBAT pin is connected to Teensy3.2 ADC pin, but also has a 10k resistor to ground 
