@@ -1,7 +1,6 @@
 #ifndef TEENSYHW_H
 #define TEENSYHW_H
 
-#define USE_USBCON
 #include <ros.h>
 #include <p3at_msgs/Status.h>
 
@@ -36,13 +35,13 @@ class TeensyHW {
   
   private:
     void initPins();
-    boolean ledState;
     p3at_msgs::Status msg;
     ros::Publisher pub;
     double battery_voltage;
     
   public:
     TeensyHW();
+    boolean ledState;
     void LEDOn();
     void LEDOff();
     void LEDToggle();
