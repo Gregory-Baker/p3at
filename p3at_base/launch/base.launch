@@ -1,5 +1,6 @@
+<?xml version="1.0"?>
 <launch>
-  <arg name="p3at_port" default="/dev/teensy" />
+  <arg name="p3at_port" default="/dev/ttyACM0" />
 
   <include file="$(find p3at_description)/launch/description.launch" />
 
@@ -15,10 +16,14 @@
     </rosparam>
     <param name="port" value="$(arg p3at_port)" />
   </node>
+
+  <!-- TODO: Eliminate this by compiling the necessary message definitions into p3at_base. -->
+  <node pkg="rosserial_python" type="message_info_service.py" name="rosserial_message_info" />
   
-  <!-- TODO: make accessories (e.g. IMU/Lidar/Cameras) options-->
-  <include file="$(find icm20948_imu)/launch/icm20948.launch" />
-  
+  <group if="$(optenv IMU_ICM20948 0)">
+    <include file="$(find icm20948_imu)/launch/icm20948.launch" />
+  </group>  
+
   <!-- Differential controller and basic localization -->
   <include file="$(find p3at_control)/launch/control.launch" />
 
