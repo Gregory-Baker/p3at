@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 
   // Create the serial rosserial server in a background ASIO event loop.
   std::string port;
-  ros::param::param<std::string>("~port", port, "/dev/teensy");
+  ros::param::param<std::string>("~port", port, "/dev/ACM0");
   boost::asio::io_service io_service;
   new rosserial_server::SerialSession(io_service, port, 115200);
   boost::thread(boost::bind(&boost::asio::io_service::run, &io_service));
