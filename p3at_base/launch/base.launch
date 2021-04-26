@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="p3at_port" default="/dev/ttyACM0" />
-  <arg name="p3at_baud" default="57600" />
+  <arg name="p3at_baud" default="115200" />
+  <arg name="p3at_control_rate" default="50" />
 
   <include file="$(find p3at_description)/launch/description.launch" />
+
+  <!-- TODO: Eliminate this by compiling the necessary message definitions into p3at_base. -->
+  <node pkg="rosserial_python" type="message_info_service.py" name="rosserial_message_info" />
 
   <node pkg="p3at_base" type="p3at_node" name="p3at_node">
 <!--    <rosparam>-->
@@ -17,15 +21,9 @@
 <!--    </rosparam>-->
     <param name="port" value="$(arg p3at_port)" />
     <param name="baud" value="$(arg p3at_baud)" />
+    <param name="control_rate" value="$(arg p3at_control_rate)" />
   </node>
-
-  <!-- TODO: Eliminate this by compiling the necessary message definitions into p3at_base. -->
-  <node pkg="rosserial_python" type="message_info_service.py" name="rosserial_message_info" />
   
-  <group if="$(optenv IMU_ICM20948 0)">
-    <include file="$(find icm20948_imu)/launch/icm20948.launch" />
-  </group>  
-
   <!-- Differential controller and basic localization -->
   <include file="$(find p3at_control)/launch/control.launch" />
 

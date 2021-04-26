@@ -52,8 +52,9 @@ int main(int argc, char* argv[])
   // Create the serial rosserial server in a background ASIO event loop.
   std::string port;
   int baud;
+  int control_rate;
   ros::param::param<std::string>("~port", port, "/dev/ttyACM0");
-  ros::param::param<int>("~baud", baud, 57600);
+  ros::param::param<int>("~baud", baud, 115200);
   ros::param::param<int>("~control_rate", control_rate, 50);
 
   boost::asio::io_service io_service;

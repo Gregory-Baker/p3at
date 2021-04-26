@@ -30,7 +30,6 @@
   <depend>python-scipy</depend>
   <depend>rosserial_python</depend>
   <depend>tf</depend>
-  <depend>robot_upstart</depend>
   <depend>p3at_msgs</depend>
 
 
