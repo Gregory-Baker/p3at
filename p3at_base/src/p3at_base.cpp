@@ -51,15 +51,20 @@ int main(int argc, char* argv[])
 
   // Create the serial rosserial server in a background ASIO event loop.
   std::string port;
-  ros::param::param<std::string>("~port", port, "/dev/ACM0");
+  int baud;
+  int control_rate;
+  ros::param::param<std::string>("~port", port, "/dev/ttyACM0");
+  ros::param::param<int>("~baud", baud, 115200);
+  ros::param::param<int>("~control_rate", control_rate, 50);
+
   boost::asio::io_service io_service;
-  new rosserial_server::SerialSession(io_service, port, 115200);
+  new rosserial_server::SerialSession(io_service, port, baud);
   boost::thread(boost::bind(&boost::asio::io_service::run, &io_service));
 
   // Background thread for the controls callback.
   ros::NodeHandle controller_nh("");
   controller_manager::ControllerManager cm(&p3at, controller_nh);
-  boost::thread(boost::bind(controlThread, ros::Rate(50), &p3at, &cm));
+  boost::thread(boost::bind(controlThread, ros::Rate(control_rate), &p3at, &cm));
 
   // Create diagnostic updater, to update itself on the ROS thread.
   // p3at_base::P3atDiagnosticUpdater p3at_diagnostic_updater;

@@ -56,9 +56,9 @@ void slow_update_flag_on() {
 
 void setup() {
   
-  while (!nh.connected()) {
-    nh.spinOnce();
-  }
+//  while (!nh.connected()) {
+//    nh.spinOnce();
+//  }
   nh.initNode();
 
   nh.subscribe(sub);
@@ -67,12 +67,12 @@ void setup() {
   teensy = new TeensyHW();
   
   int control_frequency;
-  if (! nh.getParam("control_frequency", &control_frequency)) { 
+  if (! nh.getParam("~control_rate", &control_frequency)) { 
     //default value
     control_frequency = 50;
   }
   
-  if (! nh.getParam("pid_gains", pid_gains, 3)) { 
+  if (! nh.getParam("~pid_gains", pid_gains, 3)) { 
     //default values
     pid_gains[0]= 0;
     pid_gains[1]= 100;

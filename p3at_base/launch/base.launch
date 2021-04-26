@@ -1,29 +1,29 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="p3at_port" default="/dev/ttyACM0" />
+  <arg name="p3at_baud" default="115200" />
+  <arg name="p3at_control_rate" default="50" />
 
   <include file="$(find p3at_description)/launch/description.launch" />
 
-  <node pkg="p3at_base" type="p3at_node" name="p3at_node">
-    <rosparam>
-      # TODO: Specify these in code rather than here.
-      require:
-        publishers:
-          - status
-          - feedback
-        subscribers:
-          - cmd_drive
-    </rosparam>
-    <param name="port" value="$(arg p3at_port)" />
-  </node>
-
   <!-- TODO: Eliminate this by compiling the necessary message definitions into p3at_base. -->
   <node pkg="rosserial_python" type="message_info_service.py" name="rosserial_message_info" />
-  
-  <group if="$(optenv IMU_ICM20948 0)">
-    <include file="$(find icm20948_imu)/launch/icm20948.launch" />
-  </group>  
 
+  <node pkg="p3at_base" type="p3at_node" name="p3at_node">
+<!--    <rosparam>-->
+<!--      # TODO: Specify these in code rather than here.-->
+<!--      require:-->
+<!--        publishers:-->
+<!--          - status-->
+<!--          - feedback-->
+<!--        subscribers:-->
+<!--          - cmd_drive-->
+<!--    </rosparam>-->
+    <param name="port" value="$(arg p3at_port)" />
+    <param name="baud" value="$(arg p3at_baud)" />
+    <param name="control_rate" value="$(arg p3at_control_rate)" />
+  </node>
+  
   <!-- Differential controller and basic localization -->
   <include file="$(find p3at_control)/launch/control.launch" />
 

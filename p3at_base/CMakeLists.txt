@@ -13,7 +13,6 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(Boost REQUIRED COMPONENTS thread chrono)
 
 catkin_package()
-catkin_python_setup()
 
 include_directories(include ${Boost_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
 
@@ -23,14 +22,12 @@ add_executable(p3at_node
 target_link_libraries(p3at_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_dependencies(p3at_node p3at_msgs_generate_messages_cpp)
 
-
-catkin_install_python(PROGRAMS
-  scripts/install
+install(TARGETS p3at_node
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(PROGRAMS scripts/install
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+install(DIRECTORY launch config
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
 roslaunch_add_file_check(launch/base.launch)

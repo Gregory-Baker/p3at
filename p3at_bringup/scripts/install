@@ -10,8 +10,11 @@
 #   robot_upstart docs suggests that the user should be the same as the one who ran the install script,
 #   so I am unsure why this was blocking these interfaces on startup, because the user has perm's for both.
 
+import os
 import robot_upstart
 
-j = robot_upstart.Job(name="p3at_base")
+
+j = robot_upstart.Job(workspace_setup=os.environ['ROBOT_SETUP'])
 j.add(package="p3at_base", filename="launch/base.launch")
+j.add(package="jackal_bringup", filename="launch/accessories.launch")
 j.install()
