@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
   int baud;
   ros::param::param<std::string>("~port", port, "/dev/ttyACM0");
   ros::param::param<int>("~baud", baud, 57600);
-  // system ("stty -F /dev/ttyACM0 -hupcl"); // Added to inhibit hangup signal
+  ros::param::param<int>("~control_rate", control_rate, 50);
 
   boost::asio::io_service io_service;
   new rosserial_server::SerialSession(io_service, port, baud);
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
   // Background thread for the controls callback.
   ros::NodeHandle controller_nh("");
   controller_manager::ControllerManager cm(&p3at, controller_nh);
-  boost::thread(boost::bind(controlThread, ros::Rate(50), &p3at, &cm));
+  boost::thread(boost::bind(controlThread, ros::Rate(control_rate), &p3at, &cm));
 
   // Create diagnostic updater, to update itself on the ROS thread.
   // p3at_base::P3atDiagnosticUpdater p3at_diagnostic_updater;
