@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<xacro:macro name="rplidar" params="parent_link xyz rpy">
+
+		<material name="near_black">
+			<color rgba="0.3 0.3 0.3 1"/>
+		</material>
+
+		<!-- rplidar  -->
+		<link name="rplidar">
+		<visual>
+			<geometry>
+				<cylinder length="0.04" radius="0.038"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0.02"/>
+			<material name="near_black"/>
+		</visual>
+		</link>
+		<joint name="rplidar_joint" type="fixed">
+			<parent link="${parent_link}"/>
+			<child link="rplidar"/>
+			<origin xyz="${xyz}" rpy="${rpy}"/>
+		</joint>
+
+		<link name="laser">
+    </link>
+		<joint name="rplidar_laser" type="fixed">
+			<parent link="rplidar"/>
+			<child link="laser"/>
+			<origin xyz="0 0 0.03" rpy="0 0 0"/>
+		</joint>
+
+	</xacro:macro>
+</robot>
