@@ -15,6 +15,6 @@ install(DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-install(PROGRAMS scripts/install scripts/navsat_rtk_relay
+install(PROGRAMS scripts/install
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
