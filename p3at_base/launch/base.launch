@@ -6,9 +6,6 @@
 
   <include file="$(find p3at_description)/launch/description.launch" />
 
-  <!-- TODO: Eliminate this by compiling the necessary message definitions into p3at_base. -->
-  <node pkg="rosserial_python" type="message_info_service.py" name="rosserial_message_info" />
-
   <node pkg="p3at_base" type="p3at_node" name="p3at_node">
 <!--    <rosparam>-->
 <!--      # TODO: Specify these in code rather than here.-->
@@ -23,6 +20,9 @@
     <param name="baud" value="$(arg p3at_baud)" />
     <param name="control_rate" value="$(arg p3at_control_rate)" />
   </node>
+
+  <!-- TODO: Eliminate this by compiling the necessary message definitions into p3at_base. -->
+  <node pkg="rosserial_python" type="message_info_service.py" name="rosserial_message_info" />
   
   <!-- Differential controller and basic localization -->
   <include file="$(find p3at_control)/launch/control.launch" />
