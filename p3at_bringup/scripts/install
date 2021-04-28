@@ -16,5 +16,5 @@ import robot_upstart
 
 j = robot_upstart.Job(workspace_setup=os.environ['ROBOT_SETUP'])
 j.add(package="p3at_base", filename="launch/base.launch")
-j.add(package="jackal_bringup", filename="launch/accessories.launch")
+j.add(package="p3at_bringup", filename="launch/accessories.launch")
 j.install()
