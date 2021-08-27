@@ -9,6 +9,7 @@
 - Jetson Nano running Jetpack 4.5.
 - Teensy 3.2 microcontroller to interface with the existing P3AT motor control board (which seems to work fine), running a custom sketch that can be found in [p3at_embedded folder](./p3at_embedded/p3at_teensy). 
 - RPLidar A2M8 2D lidar scanner.
+
 Specific to my requirements:
 - Sparkfun Auto pHat on the Jetson Nano to control the servo pan-tilt mount for MR teleop.
 - ZED Camera mounted on a servo pan-tilt module that tracks the users head in VR
