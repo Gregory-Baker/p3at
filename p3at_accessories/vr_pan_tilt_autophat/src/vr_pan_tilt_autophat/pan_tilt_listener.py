@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Import required Python code.
 import rospy
@@ -18,9 +18,8 @@ tilt_multiplier = 1.0
 
 class Servo(object):
     
-    def __init__(self, servo_hat, channel, zero_angle, multiplier=1.0, min = None, max = None):
-        
-        self.servo_hat = servo_hat
+    def __init__(self, channel, zero_angle, multiplier=1.0, min = None, max = None):
+       
         self.channel = channel
         self.zero_angle = zero_angle
         self.servo = self.setup_servo()
@@ -29,11 +28,11 @@ class Servo(object):
         self.max = max
 
     def setup_servo(self):
-        self.servo_hat.move_servo_position(self.channel, self.zero_angle)
+        servo_hat.move_servo_position(self.channel, self.zero_angle)
     
     def set_angle(self, angle):
         servo_angle = self.limit_angle(self.multiplier * angle + self.zero_angle)
-        self.servo_hat.move_servo_position(self.channel, servo_angle)
+        servo_hat.move_servo_position(self.channel, servo_angle)
 
     def limit_angle(self, angle):
         if (self.min != None and angle < self.min):
@@ -59,13 +58,15 @@ class ServoHat(object):
 def callback(data):
     yaw = data.y
     pitch = data.x
+    check_str = "yaw: {yaw}, pitch: {pitch}"
+    rospy.loginfo(check_str)
     if (yaw > 180):
         yaw = -(360-yaw)
     if (pitch > 180):
         pitch = -(360-pitch)
 
-    servo_hat.pan_servo.set_angle(yaw)
-    servo_hat.tilt_servo.set_angle(pitch)
+    pan_servo.set_angle(yaw)
+    tilt_servo.set_angle(pitch)
 
 def listener():
     topic = rospy.get_param('~topic', 'head_rot')
@@ -73,7 +74,11 @@ def listener():
     rospy.spin()
 
 def main():
-    servo_hat = ServoHat()
+    servo_hat = pi_servo_hat.PiServoHat()
+    servo_hat.restart()
+    pan_servo = Servo(self.servo_hat, pan_servo_channel, pan_zero_angle, pan_multiplier, pan_min, pan_max)
+    tilt_servo = Servo(self.servo_hat, tilt_servo_channel, tilt_zero_angle, tilt_multiplier)
+
     rospy.init_node('pan_tilt_listener')
     listener()
     

@@ -16,6 +16,10 @@ DCMotor* rightMotor;
 p3at_msgs::Feedback msg;
 ros::Publisher pub("feedback", &msg);
 
+bool voltage_cutoff_on = false;
+float voltage_cutoff = 10.0;
+
+
 int control_frequency;
 float pid_gains[3];
 long ticksPerRev = 99650;
@@ -110,7 +114,7 @@ void loop() {
 
     unsigned long timeSinceCommand = millis() - previousCmdTime;
     
-    if (timeSinceCommand < 500 && command_mode == 0 && battVoltage > 11.0) {      
+    if (timeSinceCommand < 500 && command_mode == 0 && (!voltage_cutoff_on || battVoltage > voltage_cutoff)) {      
       if (!leftMotor->pidOn) {
         teensy->LEDOn();
         leftMotor->PIDOn();
