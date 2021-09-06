@@ -1,14 +1,18 @@
 # Pioneer 3AT (P3AT) ROS Package
 
 ### Mission: 
-- Revive an old Pioneer 3AT (4 wheel, differential drive) robot with a new microcontroller (Teensy 3.2), and onboard computer (Raspberry Pi 4B for now, plan to switch to Jetson Nano 4GB in the future).
+- Revive an old Pioneer 3AT (4 wheel, differential drive) robot with a new microcontroller (Teensy 3.2), and onboard computer (currently Jetson Nano 4GB, previously Raspberry Pi 4, possibly Jetson Xavier NX next if I can get my hands on one).
+- I plan to use the robot for my research in mixed reality (MR) teleoperation of mobile robots, but will aim to make it a general purpose platform 
 
 ### Current Setup:
-![Adapted Pioneer 3AT Image](https://github.com/Gregory-Baker/p3at/blob/main/p3at_resources/P3AT_internal_atd2.png "Adapted Pioneer 3AT")
-- I am currently using a Ubuntu 16.04 Image from Ubiquity Robotics, with ROS Kinetic pre-installed, from [here](https://downloads.ubiquityrobotics.com/pi.html) - the 2020-11-07-ubiquity-xenial-lxde image I believe. I have disabled the magni-base service, using the method outlined [here](https://learn.ubiquityrobotics.com/image_no_magni). I also plan to disable the ros service, because I have setup my own service using the [robot_upstart](http://wiki.ros.org/robot_upstart) package that also launches my base.launch file (see p3at_base/scripts/install).
-- I have mounted a Sparkfun Auto pHAT on my raspberry pi - primaririly because it was lying around, but it also has two useful functions: 1) An inbuilt ICM20948 IMU accessible to the Pi over I2C (see [here](https://learn.sparkfun.com/tutorials/sparkfun-auto-phat-hookup-guide) for more details), and 2) A terminal block to easily get 5V power from the P3AT to the Pi. 
-- I am using a Logitech F710 Gamepad when I want to drive the robot around manually. 
-- I plan to add a RPLidar A2M8 and integrate the robot with the navigation stack next.
+![Adapted Pioneer 3AT Image](./p3at_resources/Pioneer3AT_adapted-min.png "Adapted Pioneer 3AT")
+- Jetson Nano running Jetpack 4.5.
+- Teensy 3.2 microcontroller to interface with the existing P3AT motor control board (which seems to work fine), running a custom sketch that can be found in [p3at_embedded folder](./p3at_embedded/p3at_teensy). 
+- RPLidar A2M8 2D lidar scanner.
+
+Specific to my requirements:
+- Sparkfun Auto pHat on the Jetson Nano to control the servo pan-tilt mount for MR teleop.
+- ZED Camera mounted on a servo pan-tilt module that tracks the users head in VR
 
 ### Implementation:
 Code adapted from a variety of sources, but some main ones are:
@@ -29,7 +33,7 @@ https://www.inf.ufrgs.br/~prestes/Courses/Robotics/manual_pioneer.pdf
 http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-introduction/
 - When I first setup the PID control loop for velocity control of my wheels, the tuning was terrible (started with Kp = 1, Ki = 1, Kd = 0.01) - I hadn't tuned a PID controller before and didn't know where to begin with hand-tuning. But after maybe 30 mins - 1 hour of just playing around with the numbers I arrived at one that worked pretty well. It was actually pure integral control with a gain of Ki = 100. That was a good day... 
 
-#### Communication between Pi and Teensy: 
+#### Communication between Onboard Computer and Teensy: 
 http://wiki.ros.org/rosserial
 
 #### Understanding ros_control better: 
@@ -42,4 +46,3 @@ https://github.com/methylDragon/ros-sensor-fusion-tutorial/blob/master/01%20-%20
 
 ### Potential Issues You Might Face When Replicating:
 1) This is currently a WIP, so I would be impressed if it worked first time on another system. I do have plans to do a fresh install once I've got sufficiently far with the core functionality and I'll update this README with a step-by-step.
-2) There is a udev rule in the Ubiquity Robotics Image at /etc/udev/rules.d/99-com.rules that sets permissions of I2C and inputs to "0660", i.e. 'other' users cannot read or write through these interfaces. This seems to block my joystick and I2C-based IMU when base.launch is run at upstart (using the install script I adapted from Jackal). I'm not entirely sure why this is happening as I thought (based on the robot_upstart docs) that the service should essentially be run by the user that ran the install script - which in my case was the default 'ubuntu' user, who has privalages to access all these interfaces. If I am missing something here then let me know in the 'Issues'.
