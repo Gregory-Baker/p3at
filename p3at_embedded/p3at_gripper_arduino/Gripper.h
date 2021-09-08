@@ -25,6 +25,7 @@ const int STBY = 6;
 
 const int G_OPEN = 14;
 const int L_LIMIT = 15;
+const int L_LIMIT_TOP = 2;
 const int GL_CONTACT = 16;
 const int GR_CONTACT = 18;
 const int IR_INNER = 19;
@@ -38,105 +39,96 @@ const int offsetB = 1;
 class Gripper {
 
   private:
-    Motor liftMotor;
-    Motor gripMotor;
+    Motor liftMotor = Motor(AIN1, AIN2, PWMA, offsetA, STBY);
+    Motor gripMotor = Motor(BIN1, BIN2, PWMB, offsetB, STBY);
     int speed_;
 
     bool gripperFullyOpen_;
     bool liftLimit_;
     bool liftLimitTop_;
-    bool liftLimitBottom_;
     bool leftPaddleContact_;
     bool rightPaddleContact_;
     bool innerIR_;
     bool outerIR_;
 
-    initPins();
-    readPins();
-
-
   public:
     Gripper(int);
-    Open();
-    Close();
-    Up();
-    Down();
+    void initPins();
+    void readPins();
+    void Open();
+    void Close();
+    void Up();
+    void Down();
+    void Stop();
 };
 
-Gripper::Gripper(int speed = 155) :
-  speed_(speed);
-{
-
+Gripper::Gripper(int motorSpeed = 155) {
+  speed_ = motorSpeed;
   Gripper::initPins();
   Gripper::readPins();
-
-  // Need to change this to handle unknown state
-  // when liftLimit switch is depressed at start
-  liftLimitTop_ = false;
-  liftLimitBottom_ = false;
 }
 
-Gripper::initPins() {
-  liftMotor = Motor(AIN1, AIN2, PWMA, offsetA, STBY);
-  gripMotor = Motor(BIN1, BIN2, PWMB, offsetB, STBY);
-
+void Gripper::initPins() {
   pinMode(G_OPEN, INPUT_PULLUP);
   pinMode(L_LIMIT, INPUT_PULLUP);
+  pinMode(L_LIMIT_TOP, INPUT);
   pinMode(GL_CONTACT, INPUT_PULLUP);
   pinMode(GR_CONTACT, INPUT_PULLUP);
   pinMode(IR_INNER, INPUT);
   pinMode(IR_OUTER, INPUT);
 }
 
-Gripper::readPins() {
-  gripperFullyOpen_ = !digitalRead(G_OPEN)
-  liftLimit_ = !digitalRead(L_LIMIT)
-  leftPaddleContact_ = !digitalRead(GL_CONTACT)
-  rightPaddleContact_ = !digitalRead(GR_CONTACT)
-  innerIR_ = digitalRead(IR_INNER)
-  outerIR_ = digitalRead(IR_OUTER)
+void Gripper::readPins() {
+  gripperFullyOpen_ = !digitalRead(G_OPEN);
+  liftLimit_ = !digitalRead(L_LIMIT);
+  liftLimitTop_ = digitalRead(L_LIMIT_TOP);
+  leftPaddleContact_ = !digitalRead(GL_CONTACT);
+  rightPaddleContact_ = !digitalRead(GR_CONTACT);
+  innerIR_ = digitalRead(IR_INNER);
+  outerIR_ = digitalRead(IR_OUTER);
 }
 
-Gripper::Open() {
+void Gripper::Open() {
   // Don't continue to drive if fully open
   if(!gripperFullyOpen_) {
     gripMotor.drive(speed_);
   }
+  else {
+    gripMotor.brake();
+  }
 }
 
-Gripper::Close() {
+void Gripper::Close() {
   // Don't continue to close gripper if both paddles in contact
-  if(!leftPaddleContact || !rightPaddleContact) {
-    gripMotor.drive(-speed_)
+  if(!leftPaddleContact_ || !rightPaddleContact_) {
+    gripMotor.drive(-speed_);
+  }
+  else {
+    gripMotor.brake();
   }
 }
 
-Gripper::Up() {
-  if (!liftLimit) {
-    liftLimitTop_ = false
-    liftLimitBottom_ = false;
-  }
-  if(!liftLimitTop_)
+void Gripper::Up() {
+  if(!(liftLimit_ && liftLimitTop_))
   {
     liftMotor.drive(speed_);
-    bool liftLimitPost_ = digitalRead(L_LIMIT);
-    if(liftLimitPost_ == true) {
-      liftLimitTop_ = true;
-    }
+  }
+  else {
+    liftMotor.brake();
   }
 }
 
-Gripper::Down() {
-  if (!liftLimit) {
-    liftLimitTop_ = false
-    liftLimitBottom_ = false;
-  }
-  if(!liftLimitBottom_)
+void Gripper::Down() {
+  if(!(liftLimit_ && !liftLimitTop_))
   {
     liftMotor.drive(-speed_);
-    bool liftLimitPost_ = digitalRead(L_LIMIT);
-    if(liftLimitPost_ == true) {
-      liftLimitBottom_ = true;
-    }
   }
+  else {
+    liftMotor.brake();
+  }
+}
+
+void Gripper::Stop() {
+  liftMotor.brake();
+  gripMotor.brake();
 }
