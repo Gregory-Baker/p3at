@@ -42,6 +42,8 @@ class Gripper {
     Motor liftMotor = Motor(AIN1, AIN2, PWMA, offsetA, STBY);
     Motor gripMotor = Motor(BIN1, BIN2, PWMB, offsetB, STBY);
     int speed_;
+    int liftCommand_;
+    int gripCommand_;
 
     bool gripperFullyOpen_;
     bool liftLimit_;
@@ -55,15 +57,21 @@ class Gripper {
     Gripper(int);
     void initPins();
     void readPins();
+    void setCommand(int, int);
+    void actionCommand();
     void Open();
     void Close();
     void Up();
     void Down();
     void Stop();
+    void StopLift();
+    void StopGrip();
 };
 
 Gripper::Gripper(int motorSpeed = 155) {
   speed_ = motorSpeed;
+  liftCommand_ = 0;
+  gripCommand_ = 0;
   Gripper::initPins();
   Gripper::readPins();
 }
@@ -86,6 +94,34 @@ void Gripper::readPins() {
   rightPaddleContact_ = !digitalRead(GR_CONTACT);
   innerIR_ = digitalRead(IR_INNER);
   outerIR_ = digitalRead(IR_OUTER);
+}
+
+void Gripper::setCommand(int liftCommand, int gripCommand) {
+  liftCommand_ = liftCommand;
+  gripCommand_ = gripCommand;
+}
+
+void Gripper::actionCommand(){
+  Gripper::readPins()
+  if (liftCommand_ == 1) {
+    Gripper::Up();
+  }
+  else if(liftCommand_ == -1) {
+    Gripper::Down();
+  }
+  else {
+    Gripper::StopLift();
+  }
+  
+  if (gripCommand_ == -1) {
+    Gripper::Open();
+  }
+  else if (gripCommand_ == 1) {
+    Gripper::Close();
+  }
+  else {
+    Gripper::StopGrip();
+  }
 }
 
 void Gripper::Open() {
@@ -130,5 +166,13 @@ void Gripper::Down() {
 
 void Gripper::Stop() {
   liftMotor.brake();
+  gripMotor.brake();
+}
+
+void Gripper::StopLift() {
+  liftMotor.brake();
+}
+
+void Gripper::StopGrip() {
   gripMotor.brake();
 }

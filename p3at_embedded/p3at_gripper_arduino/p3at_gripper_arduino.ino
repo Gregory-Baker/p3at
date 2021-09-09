@@ -16,18 +16,7 @@ Gripper gripper;
 ros::NodeHandle nh;
 
 void messageCb( const p3at_gripper::Command &command_msg){
-  if (command_msg.lift_command == 1) {
-    gripper.Up();
-  }
-  else if (command_msg.lift_command == -1) {
-    gripper.Down();
-  }
-  if (command_msg.gripper_command == 1) {
-    gripper.Open();
-  }
-  else if (command_msg.gripper_command == -1) {
-    gripper.Close();
-  }
+  gripper.setCommand(command_msg.lift_command, command_msg.gripper_command);
 }
 
 ros::Subscriber<p3at_gripper::Command> sub("gripper_command", &messageCb );
@@ -40,6 +29,6 @@ void setup()
 
 void loop()
 {
-  gripper.readPins();
+  gripper.actionCommand();
   nh.spinOnce();
 }
