@@ -5,14 +5,25 @@
 - I plan to use the robot for my research in mixed reality (MR) teleoperation of mobile robots, but will aim to make it a general purpose platform 
 
 ### Current Setup:
-![Adapted Pioneer 3AT Image](./p3at_resources/Pioneer3AT_adapted-min.png "Adapted Pioneer 3AT")
-- Jetson Nano running Jetpack 4.5.
+- Jetson Xavier AGX running Jetpack 4.5.
 - Teensy 3.2 microcontroller to interface with the existing P3AT motor control board (which seems to work fine), running a custom sketch that can be found in [p3at_embedded folder](./p3at_embedded/p3at_teensy). 
 - RPLidar A2M8 2D lidar scanner.
 
 Specific to my requirements:
-- Sparkfun Auto pHat on the Jetson Nano to control the servo pan-tilt mount for MR teleop.
-- ZED Camera mounted on a servo pan-tilt module that tracks the users head in VR
+- ZED Camera mounted on a dynamixel pan-tilt module that tracks the users head in VR
+
+### Setup:
+
+<ol>
+  <li>Install Jetpack on the Jetson Board.</li>
+  <li>Install ROS Melodic Desktop: http://wiki.ros.org/melodic/Installation/Ubuntu</li>
+  <li>Setup catkin workspace: http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment</li>
+  <li>Clone p3at repo (https://github.com/Gregory-Baker/p3at.git) into /src folder of catkin workspace</li>
+  <li>Install all dependencies of our p3at packages using rosdep: rosdep install --from-paths src --ignore-src -r -y</code></li>
+  <li>Run <code>catkin_make</code> from the top of your workspace (usually ~/catkin_ws) followed by <code>rospack profile</code> to ensure that ros is aware of our new packages</li>
+  <li>Write p3at_teensy sketch to Teensy 3.2 by following this tutorial: https://github.com/Gregory-Baker/p3at/tree/main/p3at_embedded</li>
+  <li>Get base.launch to start on boot using command: <code>rosrun robot_upstart install p3at_base/launch/base.launch</code>.</li>
+</ol>
 
 ### Implementation:
 Code adapted from a variety of sources, but some main ones are:
