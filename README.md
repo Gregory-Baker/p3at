@@ -4,7 +4,7 @@
 - Revive an old Pioneer 3AT (4 wheel, differential drive) robot with a new microcontroller (Teensy 3.2), and onboard computer (currently Jetson Nano 4GB, previously Raspberry Pi 4, possibly Jetson Xavier NX next if I can get my hands on one).
 - I plan to use the robot for my research in mixed reality (MR) teleoperation of mobile robots, but will aim to make it a general purpose platform 
 
-### Current Setup:
+### Current Robot Configuration:
 - Jetson Xavier AGX running Jetpack 4.5.
 - Teensy 3.2 microcontroller to interface with the existing P3AT motor control board (which seems to work fine), running a custom sketch that can be found in [p3at_embedded folder](./p3at_embedded/p3at_teensy). 
 - RPLidar A2M8 2D lidar scanner.
@@ -12,7 +12,7 @@
 Specific to my requirements:
 - ZED Camera mounted on a dynamixel pan-tilt module that tracks the users head in VR
 
-### Setup:
+### Installation/Setup:
 
 <ol>
   <li>Install Jetpack on the Jetson Board.</li>
@@ -54,6 +54,3 @@ https://fjp.at/posts/ros/ros-control/ and https://fjp.at/projects/diffbot/ros-pa
 #### Robot Localization: 
 https://github.com/methylDragon/ros-sensor-fusion-tutorial/blob/master/01%20-%20ROS%20and%20Sensor%20Fusion%20Tutorial.md
 - A good starting point for sensor fusion with the robot_localization package. I don't 100% understand what's going on under the hood with this package (and barely enough to configure it properly to be honest) but it seems to work to some extent. I am currently fusing odometry information from the diff_drive_controller (part of the ros_control suite) with the ICM20948 IMU on the Auto pHAT, but ignoring the magnetometer readings as they seem to mess things up (even though I've attempted hard-iron correction) plus I don't really need to align to the 'world' N-E-S-W coordinates at the moment because my use case is indoor navigation.
-
-### Potential Issues You Might Face When Replicating:
-1) This is currently a WIP, so I would be impressed if it worked first time on another system. I do have plans to do a fresh install once I've got sufficiently far with the core functionality and I'll update this README with a step-by-step.
