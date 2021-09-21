@@ -6,16 +6,20 @@ Our setup uses a Teensy 3.2 microcontroller and [rosserial](http://wiki.ros.org/
 
 I use Arduino IDE with the Teensyduino Add-On to install the sketch to the Teensy board. 
 
-It's advisable to install these components (Arduino IDE and Teensyduino) on the P3AT's onboard computer for 2 reasons. 1) The computer needs to have ROS and our custom message headers (p3at_msgs) already built. 2) If we need to tweak the sketch and re-upload, we can do so without accessing or unplugging the Teensy.
+It's advisable to install these components (Arduino IDE and Teensyduino) on the P3AT's onboard computer for 2 reasons. 
 
+<ol>
+  <li>The computer needs to have ROS and our custom message headers (p3at_msgs) already built.</li>
+  <li>If we need to tweak the sketch and re-upload, we can do so without physically accessing and unplugging the Teensy.</li>
+</ol>
 
-On your Pioneer's onboard computer:
+On your Pioneer's onboard Jetson board:
 <ol>
   <li>Follow the relevant <a href="https://www.pjrc.com/teensy/td_download.html">installation instructions for Teensyduino</a>. </li>
   <li>Install rosserial_arduino ros package, using <code>sudo apt install ros-melodic-rosserial-arduino</code></li>
   <li>Make sure custom p3at_msgs have been generated - p3at_msgs package must be within catkin workspace, and then `catkin_make`</li>
-  <li>Generate ros library for embedded platform - there's a bit of confusion about whether to use <code>rosserial_client</code> or <code>rosserial_arduino</code> for this step as both have `make_libraries` scripts; I've only ever succeeded with the latter. In my case, I use 'rosrun rosserial_arduino make_libraries ~/Arduino/libraries'. Make sure to point the final argument to where your Arduino installs it's libraries. [3]</li>
-  <li>Now install any additional library dependencies using the Arduino IDE - You will need PID_v2 (Max_Ignatenko) and Encoder (Paul Stoffregen) libraries.</li>
+  <li>Generate ros library for embedded platform following <a href="http://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup">this tutorial</a> [3].</li>
+  <li>Now install any additional library dependencies using the Arduino IDE - You will probably need PID_v2 (Max_Ignatenko) and Encoder (Paul Stoffregen) libraries.</li>
   <li>Set the pin mapping in TeensyHW.h to the correct values (see section below) and tweak variable values in the sketch where necessary, e.g. ticksPerRev (number of encoder ticks per wheel revolution) is set to Pioneer 3 AT value, but may be different for other Pioneer models. </li>
   <li>Now compile and upload script to Teensy</li>
 </ol>
@@ -52,6 +56,6 @@ Pin mappings are set in the TeensyHW.h header file within the p3at_teensy sketch
 
 [2] - We are in fact using pure integral control, because it performed the best during my initial hand-tuning.
 
-[3] - If anyone knows how to get rosserial_client make_libraries working correctly, as per the [ros wiki tutorials](http://wiki.ros.org/rosserial_arduino/Tutorials/Adding%20Custom%20Message) then let me know.
+[3] - I am a bit confused about whether I should be using <code>rosserial_client</code> or <code>rosserial_arduino</code> for this step as both have `make_libraries` scripts; I've only ever succeeded with the latter. If anyone knows how to get rosserial_client make_libraries working correctly, as per the [ros wiki tutorials](http://wiki.ros.org/rosserial_arduino/Tutorials/Adding%20Custom%20Message) then let me know.
 
 [4] - This is to divide the analog voltage from 0 - 5V range to 0 - 3V3 range that Teensy can read.
