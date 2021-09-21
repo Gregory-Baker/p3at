@@ -12,9 +12,9 @@ It's advisable to install these components (Arduino IDE and Teensyduino) on the 
 On your Pioneer's onboard computer:
 <ol>
   <li>Follow the relevant <a href="https://www.pjrc.com/teensy/td_download.html">installation instructions for Teensyduino</a>. </li>
-  <li>Install rosserial_arduino ros package, using `sudo apt install ros-melodic-rosserial-arduino`</li>
+  <li>Install rosserial_arduino ros package, using <code>sudo apt install ros-melodic-rosserial-arduino</code></li>
   <li>Make sure custom p3at_msgs have been generated - p3at_msgs package must be within catkin workspace, and then `catkin_make`</li>
-  <li>Generate ros library for embedded platform - there's a bit of confusion about whether to use `rosserial_client` or `rosserial_arduino` for this step as both have `make_libraries` scripts; I've only ever succeeded with the latter. In my case, I use 'rosrun rosserial_arduino make_libraries ~/Arduino/libraries'. Make sure to point the final argument to where your Arduino installs it's libraries. [3]</li>
+  <li>Generate ros library for embedded platform - there's a bit of confusion about whether to use <code>rosserial_client</code> or <code>rosserial_arduino</code> for this step as both have `make_libraries` scripts; I've only ever succeeded with the latter. In my case, I use 'rosrun rosserial_arduino make_libraries ~/Arduino/libraries'. Make sure to point the final argument to where your Arduino installs it's libraries. [3]</li>
   <li>Now install any additional library dependencies using the Arduino IDE - You will need PID_v2 (Max_Ignatenko) and Encoder (Paul Stoffregen) libraries.</li>
   <li>Set the pin mapping in TeensyHW.h to the correct values (see section below) and tweak variable values in the sketch where necessary, e.g. ticksPerRev (number of encoder ticks per wheel revolution) is set to Pioneer 3 AT value, but may be different for other Pioneer models. </li>
   <li>Now compile and upload script to Teensy</li>
