@@ -8,20 +8,20 @@ ros::NodeHandle nh;
 
 const int LED = 13;           // LED pin
 
-const int LPWM = 3;          // Left motor PWM
-const int RPWM = 4;          // Right motor PWM
+const int LPWM = 10;          // Left motor PWM
+const int RPWM = 9;          // Right motor PWM
 
-const int LDIR = 23;           // Left motor direction
-const int RDIR = 22;           // Right motor direction
+const int LDIR = 14;           // Left motor direction
+const int RDIR = 15;           // Right motor direction
 
-const int LEA = 21;            // Left encoder A
-const int REA = 20;            // Right encoder A
-const int REB = 19;            // Right encoder B
-const int LEB = 18;            // Left encoder B
+const int LEA = 16;            // Left encoder A
+const int REA = 17;            // Right encoder A
+const int REB = 20;            // Right encoder B
+const int LEB = 21;            // Left encoder B
 
-const int MEN = 10;           // Motor enable
-const int ESTOP = 11;         // E-Stop detect input
-const int VBAT = A1;          // Battery Voltage
+const int MEN = 8;           // Motor enable
+const int ESTOP = 7;         // E-Stop detect input
+const int VBAT = A9;          // Battery Voltage
 
 /*  
  *   Note: VBAT pin is connected to Teensy3.2 ADC pin, but also has a 10k resistor to ground 
