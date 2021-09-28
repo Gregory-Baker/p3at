@@ -1,7 +1,7 @@
 # Pioneer 3AT (P3AT) ROS Package
 
 ### Mission: 
-- Revive an old Pioneer 3AT (4 wheel, differential drive) robot with a new microcontroller (Teensy 3.2), and onboard computer (currently Jetson Nano 4GB, previously Raspberry Pi 4, possibly Jetson Xavier NX next if I can get my hands on one).
+- Revive an old Pioneer 3AT (4 wheel, differential drive) robot with a new microcontroller (Teensy 3.2), and onboard computer (currently Jetson Xavier AGX, previously Jetson Nano 4GB and before that a Raspberry Pi 4).
 - I plan to use the robot for my research in mixed reality (MR) teleoperation of mobile robots, but will aim to make it a general purpose platform 
 
 ### Current Robot Configuration:
