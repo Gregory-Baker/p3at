@@ -39,8 +39,8 @@ const int offsetB = 1;
 class Gripper {
 
   private:
-    Motor liftMotor = Motor(AIN1, AIN2, PWMA, offsetA, STBY);
-    Motor gripMotor = Motor(BIN1, BIN2, PWMB, offsetB, STBY);
+    Motor gripMotor = Motor(AIN1, AIN2, PWMA, offsetA, STBY);
+    Motor liftMotor = Motor(BIN1, BIN2, PWMB, offsetB, STBY);
     int speed_;
     int liftCommand_;
     int gripCommand_;
