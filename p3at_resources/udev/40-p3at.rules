@@ -1,0 +1,5 @@
+# Add symlink to Teensy MCU Controller
+KERNEL=="ttyACM*", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04*", SYMLINK+="teensy"
+
+# Add symlink to Gripper Controller (Arduino Nano Every)
+SUBSYSTEM=="tty" ATTRS{manufacturer}=="Arduino*" SYMLINK+="arduino"

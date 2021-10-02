@@ -32,7 +32,7 @@ Connect Teensy via USB to jetson and everything should work. You can test the se
 
 Pin mappings are set in the TeensyHW.h header file within the p3at_teensy sketch. Our circuit is shown in the picture below 
 
-<img src="https://github.com/Gregory-Baker/p3at/blob/main/p3at_resources/p3at_teensy_mcb_hookup_v2.png" alt="Teensy <-> Pioneer MCB Circuit" width="600"/>
+<img src="https://github.com/Gregory-Baker/p3at/blob/main/p3at_resources/images/p3at_teensy_mcb_hookup_v2.png" alt="Teensy <-> Pioneer MCB Circuit" width="600"/>
 
 | Description       | Pioneer MCB Pin | Teensy Pin  | Pin Name    | Notes         |
 | ----              | ----            | ----        | ----        | ----          |

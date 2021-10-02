@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="p3at_port" default="/dev/ttyACM0" />
+  <arg name="p3at_port" default="/dev/teensy" />
   <arg name="p3at_baud" default="115200" />
   <arg name="p3at_control_rate" default="50" />
 
