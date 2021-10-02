@@ -4,7 +4,7 @@ for Bristol Robotics Lab custom P3AT project
 Author: Greg Baker
 Assumed motor config:
 - Lift Up (+ve) and Down (-ve) on A_IN pins of TB6612 motor driver
-- Gripper Out (+ve) and In (-ve) on B_IN pins of TB6612 motor driver
+- Gripper In (+ve) and Out (-ve) on B_IN pins of TB6612 motor driver
 
 Requires:
 Sparkfun_TB6612 library
@@ -25,11 +25,11 @@ const int STBY = 6;
 
 const int G_OPEN = 14;
 const int L_LIMIT = 15;
-const int L_LIMIT_TOP = 2;
-const int GL_CONTACT = 16;
-const int GR_CONTACT = 18;
-const int IR_INNER = 19;
-const int IR_OUTER = 17; // Not working
+const int L_LIMIT_TOP = 20;
+const int GL_CONTACT = 17;
+const int GR_CONTACT = 19;
+const int IR_INNER = 18;
+const int IR_OUTER = 16; // Not working
 
 // Used to reverse motor directions if neccessary
 const int offsetA = 1;
@@ -66,6 +66,8 @@ class Gripper {
     void Stop();
     void StopLift();
     void StopGrip();
+    void printRead(bool, bool, bool, bool, bool, bool, bool);
+
 };
 
 Gripper::Gripper(int motorSpeed = 155) {
@@ -102,7 +104,7 @@ void Gripper::setCommand(int liftCommand, int gripCommand) {
 }
 
 void Gripper::actionCommand(){
-  Gripper::readPins()
+  Gripper::readPins();
   if (liftCommand_ == 1) {
     Gripper::Up();
   }
@@ -130,6 +132,7 @@ void Gripper::Open() {
     gripMotor.drive(speed_);
   }
   else {
+    gripCommand_ = 0;
     gripMotor.brake();
   }
 }
@@ -140,6 +143,7 @@ void Gripper::Close() {
     gripMotor.drive(-speed_);
   }
   else {
+    gripCommand_ = 0;
     gripMotor.brake();
   }
 }
@@ -150,6 +154,7 @@ void Gripper::Up() {
     liftMotor.drive(speed_);
   }
   else {
+    liftCommand_ = 0;
     liftMotor.brake();
   }
 }
@@ -160,6 +165,7 @@ void Gripper::Down() {
     liftMotor.drive(-speed_);
   }
   else {
+    liftCommand_ = 0;
     liftMotor.brake();
   }
 }
@@ -175,4 +181,45 @@ void Gripper::StopLift() {
 
 void Gripper::StopGrip() {
   gripMotor.brake();
+}
+
+void Gripper::printRead(bool LL = true, bool LLT =true, bool GO = true, bool GL = true, bool GR = true, bool IRI = true, bool IRO = true) {
+  Gripper::readPins();
+  if(Serial) {
+    if (LL){
+      Serial.print("Lift_Limit:");
+      Serial.print(liftLimit_);
+      Serial.print("\t");
+    }
+    if (LLT){
+      Serial.print("Lift_Limit_Top:");
+      Serial.print(liftLimitTop_);
+      Serial.print("\t");
+    }
+    if (GO) {
+      Serial.print("Gripper_Open:");
+      Serial.print(gripperFullyOpen_);
+      Serial.print("\t");
+    }
+    if (GL) {
+      Serial.print("Left_Paddle_Contact:");
+      Serial.print(leftPaddleContact_);
+      Serial.print("\t");
+    }
+    if (GR) {
+      Serial.print("Right_Paddle_Contact:");
+      Serial.print(rightPaddleContact_);
+      Serial.print("\t");
+    }
+    if (IRI) {
+      Serial.print("Inner_IR:");
+      Serial.print(innerIR_);
+      Serial.print("\t");
+    }
+    if (IRO) {
+      Serial.print("Outer_IR:");
+      Serial.print(outerIR_);
+    }
+    Serial.println();
+  }
 }
