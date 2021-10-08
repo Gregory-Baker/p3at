@@ -22,8 +22,11 @@ Specific to my requirements:
   <li>Install all dependencies of our p3at packages using rosdep: <code>rosdep install --from-paths src --ignore-src -r -y</code></li>
   <li>Run <code>catkin_make</code> from the top of your workspace (usually ~/catkin_ws) followed by <code>rospack profile</code> to ensure that ros is aware of our new packages</li>
   <li>Write p3at_teensy sketch to Teensy 3.2 by following this tutorial: https://github.com/Gregory-Baker/p3at/tree/main/p3at_embedded</li>
+  <li>Setup udev rules to name teensy MCU and arduino MCU /dev/teensy and /dev/arduino respectively [1]: <code>sudo wget -O /etc/udev/rules.d/40-p3at.rules https://github.com/Gregory-Baker/p3at/raw/main/p3at_resources/udev/40-p3at.rules</code>
   <li>Get base.launch to start on boot using command: <code>rosrun robot_upstart install p3at_base/launch/base.launch</code>.</li>
 </ol>
+
+[1] Otherwise they get assigned /dev/ttyACM[0 or 1] which causes confussion. Note, the way this is currently done would not be robust if multiple teensy's or multiple arduinos were being used simultaneously.
 
 ### Implementation:
 Code adapted from a variety of sources, but some main ones are:
