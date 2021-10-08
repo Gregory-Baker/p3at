@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)"/>
+
+  <include file="$(find p3at_navigation)/launch/amcl.launch" />
+
+  <node pkg="rviz" name="rviz" type="rviz" args="-d $(find p3at_viz)/rviz/scan.rviz"/>
+
+
+
+</launch>
