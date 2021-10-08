@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!--Make sure port name of gripper MCU is correct"-->
+  <arg name="port" value="/dev/arduino"/> 
+
+  <!--Launch rosserial node to communicate with gripper-->
+  <node pkg="rosserial_python" type="serial_node.py" name="p3at_gripper_serial_node">
+    <param name="port" value="$(arg port)"/>
+  </node>
+  
+  <!--Launch script to control gripper using Logitech F710 joystick (assumes joy node running already)-->
+  <node pkg="p3at_gripper" type="p3at_gripper_joy.py" name="p3at_gripper_joy">
+    <remap from="joy" to="/joy_teleop/joy"/>
+  </node>
+</launch>
