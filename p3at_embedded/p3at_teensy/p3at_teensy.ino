@@ -63,6 +63,7 @@ void setup() {
 //  while (!nh.connected()) {
 //    nh.spinOnce();
 //  }
+  nh.getHardware()->setBaud(115200);
   nh.initNode();
 
   nh.subscribe(sub);

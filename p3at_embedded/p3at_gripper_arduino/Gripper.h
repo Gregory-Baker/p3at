@@ -5,7 +5,6 @@ Author: Greg Baker
 Assumed motor config:
 - Lift Up (+ve) and Down (-ve) on A_IN pins of TB6612 motor driver
 - Gripper In (+ve) and Out (-ve) on B_IN pins of TB6612 motor driver
-
 Requires:
 Sparkfun_TB6612 library
 ******************************************************************************/
@@ -29,7 +28,7 @@ const int L_LIMIT_TOP = 20;
 const int GL_CONTACT = 17;
 const int GR_CONTACT = 19;
 const int IR_INNER = 18;
-const int IR_OUTER = 16; // Not working
+const int IR_OUTER = 16;
 
 // Used to reverse motor directions if neccessary
 const int offsetA = 1;
@@ -46,8 +45,11 @@ class Gripper {
     int gripCommand_;
 
     bool gripperFullyOpen_;
+    bool gripperClosed_;
     bool liftLimit_;
     bool liftLimitTop_;
+    bool liftUpLimit_;
+    bool liftDownLimit_;
     bool leftPaddleContact_;
     bool rightPaddleContact_;
     bool innerIR_;
@@ -57,6 +59,7 @@ class Gripper {
     Gripper(int);
     void initPins();
     void readPins();
+    void getRead(bool[6]);
     void setCommand(int, int);
     void actionCommand();
     void Open();
@@ -92,10 +95,32 @@ void Gripper::readPins() {
   gripperFullyOpen_ = !digitalRead(G_OPEN);
   liftLimit_ = !digitalRead(L_LIMIT);
   liftLimitTop_ = digitalRead(L_LIMIT_TOP);
+  if (liftLimit_ && liftLimitTop_) {
+    liftUpLimit_ = true;
+    liftDownLimit_ = false;
+  }
+  else if (liftLimit_) {
+    liftUpLimit_ = false;
+    liftDownLimit_ = true;
+  }
+  else {
+    liftUpLimit_ = false;
+    liftDownLimit_ = false;
+  }
   leftPaddleContact_ = !digitalRead(GL_CONTACT);
   rightPaddleContact_ = !digitalRead(GR_CONTACT);
+  gripperClosed_ = (leftPaddleContact_ && rightPaddleContact_) ? true : false;
   innerIR_ = digitalRead(IR_INNER);
   outerIR_ = digitalRead(IR_OUTER);
+}
+
+void Gripper::getRead(bool readings[6]) {
+  readings[0] = gripperFullyOpen_;
+  readings[1] = gripperClosed_;
+  readings[2] = liftUpLimit_;
+  readings[3] = liftDownLimit_;
+  readings[4] = outerIR_;
+  readings[5] = innerIR_;
 }
 
 void Gripper::setCommand(int liftCommand, int gripCommand) {
@@ -114,7 +139,7 @@ void Gripper::actionCommand(){
   else {
     Gripper::StopLift();
   }
-  
+
   if (gripCommand_ == -1) {
     Gripper::Open();
   }
@@ -139,7 +164,7 @@ void Gripper::Open() {
 
 void Gripper::Close() {
   // Don't continue to close gripper if both paddles in contact
-  if(!leftPaddleContact_ || !rightPaddleContact_) {
+  if(!gripperClosed_) {
     gripMotor.drive(-speed_);
   }
   else {
@@ -149,7 +174,7 @@ void Gripper::Close() {
 }
 
 void Gripper::Up() {
-  if(!(liftLimit_ && liftLimitTop_))
+  if(!liftUpLimit_)
   {
     liftMotor.drive(speed_);
   }
@@ -160,7 +185,7 @@ void Gripper::Up() {
 }
 
 void Gripper::Down() {
-  if(!(liftLimit_ && !liftLimitTop_))
+  if(!liftDownLimit_)
   {
     liftMotor.drive(-speed_);
   }
@@ -171,6 +196,8 @@ void Gripper::Down() {
 }
 
 void Gripper::Stop() {
+  liftCommand_ = 0;
+  gripCommand_ = 0;
   liftMotor.brake();
   gripMotor.brake();
 }
