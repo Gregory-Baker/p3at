@@ -14,7 +14,7 @@ import os
 import robot_upstart
 
 
-j = robot_upstart.Job(workspace_setup=os.environ['ROBOT_SETUP'])
+j = robot_upstart.Job(name="p3at", workspace_setup=os.environ['ROBOT_SETUP'], master_uri="http://192.168.1.170:11311")
 j.add(package="p3at_base", filename="launch/base.launch")
 j.add(package="p3at_bringup", filename="launch/accessories.launch")
 j.install()

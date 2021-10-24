@@ -7,8 +7,10 @@
 #include "OpticalEncoder.h"
 #include <p3at_msgs/Drive.h>
 #include <p3at_msgs/Feedback.h>
+#include "Imu.h"
 
 TeensyHW* teensy;
+Imu imu(true, false, false);
 
 DCMotor* leftMotor;
 DCMotor* rightMotor;
@@ -68,8 +70,10 @@ void setup() {
 
   nh.subscribe(sub);
   nh.advertise(pub);
+  nh.advertise(imu.pub_);
 
   teensy = new TeensyHW();
+  //imu = new Imu(true, false, false);
   
   int control_frequency;
   if (! nh.getParam("~control_rate", &control_frequency)) { 
@@ -145,6 +149,9 @@ void loop() {
 
     pub.publish(&msg);
 
+    imu.updateImuMsg();
+    imu.pubImu();
+
     control_update_flag = false;
   }
 
@@ -154,6 +161,7 @@ void loop() {
       teensy->LEDToggle();
     }
     teensy->PublishBatteryVoltage();
+    
     slow_update_flag = false;
   }
 }

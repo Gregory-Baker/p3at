@@ -10,9 +10,11 @@ Brief: Augment p3at.urdf.xacro base setup with support for custom components
 		<xacro:rplidar parent_link="top_plate" xyz="$(optenv P3AT_LASER_OFFSET 0 0 0)" rpy="$(optenv P3AT_LASER_RPY 0 0 0)"/>
 	</xacro:if>
 
+	<!--xacro:include filename="$(find p3at_description)/urdf/accessories/rplidar.urdf.xacro" /-->
+	<!--xacro:rplidar parent_link="top_plate" xyz="0.21 0 -0.05" rpy="0 0 -1.571"/-->
 
 	<xacro:if value="$(optenv IMU 0)">
-		<xacro:include filename="$(find p3at_description)/urdf/accessories/imu_icm20948.urdf.xacro" />
+		<xacro:include filename="$(find p3at_description)/urdf/accessories/imu.urdf.xacro" />
 		<xacro:imu parent_link="top_plate" xyz="$(optenv P3AT_IMU_OFFSET 0 0 0)" rpy = "$(optenv P3AT_IMU_RPY 0 0 0)"/>
 	</xacro:if>
 
