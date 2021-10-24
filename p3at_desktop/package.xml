@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>p3at_desktop</name>
+  <version>0.0.0</version>
+  <description>The p3at_desktop package</description>
+
+  <maintainer email="gregory.baker@brl.ac.uk">greg</maintainer>
+>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>p3at_control</build_depend>
+  <build_depend>p3at_msgs</build_depend>
+  <build_depend>p3at_navigation</build_depend>
+  <build_depend>p3at_rplidar</build_depend>
+  <build_depend>p3at_viz</build_depend>
+  <build_depend>robot_upstart</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_export_depend>p3at_control</build_export_depend>
+  <build_export_depend>p3at_msgs</build_export_depend>
+  <build_export_depend>p3at_navigation</build_export_depend>
+  <build_export_depend>p3at_rplidar</build_export_depend>
+  <build_export_depend>p3at_viz</build_export_depend>
+  <build_export_depend>robot_upstart</build_export_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <exec_depend>p3at_control</exec_depend>
+  <exec_depend>p3at_msgs</exec_depend>
+  <exec_depend>p3at_navigation</exec_depend>
+  <exec_depend>p3at_rplidar</exec_depend>
+  <exec_depend>p3at_viz</exec_depend>
+  <exec_depend>robot_upstart</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+
+
+  <export>
+
+  </export>
+</package>
