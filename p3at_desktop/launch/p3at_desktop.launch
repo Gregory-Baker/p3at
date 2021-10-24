@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="rviz" default="false" doc="spawn rviz"/>
+  <arg name="rviz_config" default="robot" doc="rviz config file"/>
+  <arg name="joy" default="true" doc="spawn joystick teleop controller"/>
+
+  <group if="$(arg joy)">
+    <include file="$(find p3at_control)/launch/teleop.launch"/>  
+  </group>
+
+  <group if="$(arg rviz)">
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find p3at_viz)/rviz/$(arg config).rviz" />
+  </group>
+  
+</launch>
