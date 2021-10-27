@@ -10,6 +10,20 @@ Environment Variables generally derived from /etc/ros/setup.bash
   <group if="$(optenv RPLIDAR 0)">
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
     <include file="$(find p3at_rplidar)/launch/p3at_laser_filter.launch" />
-  </group>  
+  </group>
+  
+  <group if="$(optenv PAN_TILT 0)">
+    <node pkg="dynamixel_pan_tilt" type="dynamixel_pan_tilt_node.py" name="dynamixel_pan_tilt_node"/>
+  </group>
+  
+  <group if="$(optenv RADEYE 0)">
+    <include file="$(find radeye)/launch/radeye_example.launch"/>
+  </group>
+
+  <group if="$(optenv ZED_STREAM 0)">
+    <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_zedstream">
+      <param name="cmd" value="/home/jetson/ZED_Streaming_Sender_Depth"/>
+    </node>
+  </group>
 
 </launch>
