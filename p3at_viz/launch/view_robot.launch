@@ -1,5 +1,6 @@
 <launch>
   <param name="use_gui" value="true"/>
-  <arg name="config" default="robot" />
+  <arg name="config" default="robot"/>
+
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find p3at_viz)/rviz/$(arg config).rviz" />
 </launch>

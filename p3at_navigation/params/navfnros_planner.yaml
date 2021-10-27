@@ -19,7 +19,7 @@ visualize_potential: false
 #Specifies whether or not to visualize the potential area computed via a PointCloud2.
 #(bool, default: false)
 
-use_dijkstra: true
+use_dijkstra: false
 #If true, use dijkstra's algorithm. Otherwise, A*.
 #(bool, default: true)
 
@@ -39,16 +39,16 @@ old_navfn_behavior: false
 lethal_cost: 253 
 #Lethal Cost (dynamic reconfigure) (int, default: 253)
 
-neutral_cost: 50
+neutral_cost: 66
 #Neutral Cost (dynamic reconfigure) (int, default: 50)
 
-cost_factor: 0.8
+cost_factor: 0.55
 #Factor to multiply each cost from costmap by (dynamic reconfigure) (double, default: 3.)
 
 publish_potential: true
 #Publish Potential Costmap (dynamic reconfigure) (bool, default: True)
 
-orientation_mode: 0
+orientation_mode: 1
 #How to set the orientation of each point 
 #(None=0, Forward=1, Interpolate=2, ForwardThenInterpolate=3, Backward=4, Leftward=5, Rightward=6) (dynamic reconfigure)
 #(int, default: 0)
