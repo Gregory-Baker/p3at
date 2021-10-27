@@ -10,13 +10,15 @@
 #include "Imu.h"
 
 TeensyHW* teensy;
-Imu imu(true, false, false);
+Imu* imu;
 
 DCMotor* leftMotor;
 DCMotor* rightMotor;
 
 p3at_msgs::Feedback msg;
 ros::Publisher pub("feedback", &msg);
+
+bool pub_imu = true;
 
 bool voltage_cutoff_on = false;
 float voltage_cutoff = 10.0;
@@ -70,10 +72,14 @@ void setup() {
 
   nh.subscribe(sub);
   nh.advertise(pub);
-  nh.advertise(imu.pub_);
+
+  if(pub_imu) {
+    imu = new Imu(true, false, false);
+    nh.advertise(imu->pub_);
+  }
+  
 
   teensy = new TeensyHW();
-  //imu = new Imu(true, false, false);
   
   int control_frequency;
   if (! nh.getParam("~control_rate", &control_frequency)) { 
@@ -149,8 +155,10 @@ void loop() {
 
     pub.publish(&msg);
 
-    imu.updateImuMsg();
-    imu.pubImu();
+    if (pub_imu) {
+      imu->updateImuMsg();
+      imu->pubImu();
+    }
 
     control_update_flag = false;
   }

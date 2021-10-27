@@ -9,6 +9,7 @@ Environment Variables generally derived from /etc/ros/setup.bash
 
   <group if="$(optenv RPLIDAR 0)">
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
+    <include file="$(find p3at_rplidar)/launch/p3at_laser_filter.launch" />
   </group>  
 
 </launch>
