@@ -39,6 +39,7 @@ class Gripper {
   public:
     Gripper(int);
     void setCommand(int, int);
+    void setMotorSpeed(int);
     void actionCommand();
     void Open();
     void Close();
@@ -58,6 +59,10 @@ Gripper::Gripper(int motorSpeed = 155) {
 void Gripper::setCommand(int liftCommand, int gripCommand) {
   liftCommand_ = liftCommand;
   gripCommand_ = gripCommand;
+}
+
+void Gripper::setMotorSpeed(int motorSpeed) {
+  speed_ = motorSpeed;
 }
 
 void Gripper::actionCommand(){

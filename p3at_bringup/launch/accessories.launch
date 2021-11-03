@@ -26,4 +26,12 @@ Environment Variables generally derived from /etc/ros/setup.bash
     </node>
   </group>
 
+  <group if="$(optenv GRIPPER 0)">
+    <!--Launch rosserial node to communicate with gripper-->
+    <node pkg="rosserial_python" type="serial_node.py" name="p3at_gripper_serial_node">
+      <param name="port" value="/dev/arduino"/>
+      <param name="gripper_motor_speed" value="240"/>
+    </node>
+  </group>
+
 </launch>
