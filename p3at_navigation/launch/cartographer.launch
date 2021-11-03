@@ -15,12 +15,15 @@
 -->
 
 <launch>
+  <arg name="move_base" default="true"/>
+
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory
               $(find p3at_navigation)/config
           -configuration_basename p3at.lua"
-      output="screen">
+      output="screen"> 
+      <remap from="/odom" to="/odometry/filtered"/>
       <remap from="/scan" to="/scan_filtered"/>
   </node>
 
@@ -28,6 +31,8 @@
       type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
 
   <!--- Run Move Base -->
-  <include file="$(find p3at_navigation)/launch/move_base.launch" />
+  <group if="$(arg move_base)">
+    <include file="$(find p3at_navigation)/launch/move_base.launch" />
+  </group>
 
 </launch>
