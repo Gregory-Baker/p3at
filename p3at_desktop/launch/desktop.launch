@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="joy" default="true" doc="spawn joystick teleop controller"/>
+  <arg name="mapping" default="cartographer" doc="spawn cartographer mapping"/>
+  <arg name="move_base" default="false" doc="spawn move_base"/>
+  <arg name="unity" default="true" doc="spawn ros_tcp_endpoint for Unity link"/>
+  <arg name="rviz" default="true" doc="spawn rviz"/>
+  <arg name="rviz_config" default="map" unless="$(eval mapping == 'none')"/>
+  <!--arg name="rviz_config" default="map" unless="$(arg mapping)"/-->
+  <!--arg name="rviz_config" value="map" if="$(arg mapping)"/-->
+
+  <group if="$(arg joy)">
+    <include file="$(find p3at_control)/launch/teleop.launch"/>  
+  </group>
+
+  <group if="$(eval mapping == 'cartographer')">
+    <include file="$(find p3at_navigation)/launch/cartographer.launch">
+      <arg name="move_base" value="$(arg move_base)"/>
+    </include>
+  </group>
+
+  <group if="$(eval mapping == 'slam_toolbox')">
+    <include file="$(find slam_toolbox)/launch/online_async.launch"/>
+  </group>
+
+  <group if="$(arg unity)">
+    <include file="$(find ros_tcp_endpoint)/launch/endpoint.launch"/>  
+  </group>
+
+  <group if="$(arg rviz)">
+    <include file="$(find p3at_viz)/launch/view_robot.launch">
+      <arg name="config" value="$(arg rviz_config)"/>
+    </include>
+  </group>
+  
+</launch>
