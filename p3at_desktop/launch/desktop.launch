@@ -6,11 +6,16 @@
   <arg name="unity" default="true" doc="spawn ros_tcp_endpoint for Unity link"/>
   <arg name="rviz" default="true" doc="spawn rviz"/>
   <arg name="rviz_config" default="map" unless="$(eval mapping == 'none')"/>
-  <!--arg name="rviz_config" default="map" unless="$(arg mapping)"/-->
-  <!--arg name="rviz_config" value="map" if="$(arg mapping)"/-->
+  <arg name="gripper" default="true" doc="spawn p3at gripper joystick node"/>
 
   <group if="$(arg joy)">
-    <include file="$(find p3at_control)/launch/teleop.launch"/>  
+    <include file="$(find p3at_control)/launch/teleop.launch"/>
+
+    <group if="$(arg gripper)">
+      <node pkg="p3at_gripper" type="p3at_gripper_joy.py" name="p3at_gripper_joy">
+        <remap from="joy" to="/joy_teleop/joy"/>
+      </node>
+    </group>
   </group>
 
   <group if="$(eval mapping == 'cartographer')">
