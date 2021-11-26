@@ -7,22 +7,31 @@ Environment Variables generally derived from /etc/ros/setup.bash
 
 <launch>
 
+  <arg name="camera" default="zed"/>
+
   <group if="$(optenv RPLIDAR 0)">
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
     <include file="$(find p3at_rplidar)/launch/p3at_laser_filter.launch" />
-  </group>
-  
-  <group if="$(optenv PAN_TILT 0)">
-    <node pkg="dynamixel_pan_tilt" type="dynamixel_pan_tilt_node.py" name="dynamixel_pan_tilt_node"/>
   </group>
   
   <group if="$(optenv RADEYE 0)">
     <include file="$(find radeye)/launch/radeye_example.launch"/>
   </group>
 
-  <group if="$(optenv ZED_STREAM 0)">
+  <group if="$(eval arg('camera') == 'zed')">
+    <group if="$(optenv PAN_TILT 0)">
+      <node pkg="dynamixel_pan_tilt" type="dynamixel_pan_tilt_node.py" name="dynamixel_pan_tilt_node"/>
+    </group>
+
     <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_zedstream">
       <param name="cmd" value="/home/jetson/ZED_Streaming_Sender_Depth"/>
+    </node>
+  </group>
+
+  <group if="$(eval arg('camera') == 'theta')">
+    <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_theta">
+      <param name="cmd" 
+            value="gst-launch-1.0 thetauvcsrc mode=4K ! queue ! h264parse ! rtph264pay mtu=1400 ! udpsink host=192.168.1.128 port=7000 sync=false"/>
     </node>
   </group>
 
@@ -36,8 +45,11 @@ Environment Variables generally derived from /etc/ros/setup.bash
 
   <group if="$(optenv USB_CAM 0)">
     <node pkg="usb_cam" type="usb_cam_node" name="usb_cam">
-      <param name="video_device" value="$(optenv USB_CAM_DEVICE /dev/video0)"/>
+      <param name="video_device" value="$(optenv USB_CAM_DEVICE /dev/webcam)"/>
       <param name="framerate" value="15"/>
+      <!--param name="image_width" value="640" /-->
+      <!--param name="image_height" value="480" /-->
+      <param name="pixel_format" value="yuyv" />
     </node>
   </group>
 

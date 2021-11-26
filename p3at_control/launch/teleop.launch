@@ -6,10 +6,10 @@
 
   <group ns="joy_teleop">
 
-	  <rosparam command="load" file="$(find p3at_control)/config/teleop_logitech.yaml" />
-	  <param name="joy_node/dev" value="$(arg joy_dev)" />
+    <rosparam command="load" file="$(find p3at_control)/config/teleop_logitech.yaml" />
+    <param name="joy_node/dev" value="$(arg joy_dev)" />
 	  
-    <node pkg="joy" type="joy_node" name="joy_node" />
+    <node pkg="joy" type="joy_node" name="$(anon joy_node)" />
 
     <node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
   </group>
