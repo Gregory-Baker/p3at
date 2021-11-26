@@ -11,7 +11,7 @@ Author: Greg Baker
 
 p3at_gripper::Command cmd;
 
-int gripper_motor_speed;
+int gripper_motor_speed = 0;
 
 Gripper gripper;
 
@@ -27,13 +27,12 @@ void messageCb( const p3at_gripper::Command &command_msg){
 ros::Subscriber<p3at_gripper::Command> sub("gripper_command", &messageCb );
 
 void setSpeed() {
-    
+  
   if (! nh.getParam("~gripper_motor_speed", &gripper_motor_speed)) { 
-    gripper_motor_speed = 200;
-  } 
-  else {
-    nh.loginfo("Non-default gripper motor speed param set");
+    gripper_motor_speed = 255;
   }
+  
+  nh.loginfo("Non-default gripper motor speed param set");
 
   gripper_motor_speed = (gripper_motor_speed > 255) ? 255 : gripper_motor_speed;
   gripper_motor_speed = (gripper_motor_speed < 100) ? 100 : gripper_motor_speed;
@@ -53,6 +52,10 @@ void setup()
 void loop()
 {
   nh.spinOnce();
+
+  if (gripper_motor_speed == 0) {
+    setSpeed();
+  }
 
   unsigned long timeSinceCmd = millis() - cmdTime;
   if (timeSinceCmd > 500) {
