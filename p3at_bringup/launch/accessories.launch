@@ -20,7 +20,7 @@ Environment Variables generally derived from /etc/ros/setup.bash
     <include file="$(find radeye)/launch/radeye_example.launch"/>
   </group>
 
-  <group if="$(optenv ZED_STREAM 0)">
+  <group if="$(optenv ZED 0)">
     <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_zedstream">
       <param name="cmd" value="/home/jetson/ZED_Streaming_Sender_Depth"/>
     </node>

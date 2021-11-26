@@ -18,4 +18,37 @@ Brief: Augment p3at.urdf.xacro base setup with support for custom components
 		<xacro:imu parent_link="top_plate" xyz="$(optenv P3AT_IMU_OFFSET 0 0 0)" rpy = "$(optenv P3AT_IMU_RPY 0 0 0)"/>
 	</xacro:if>
 
+	<xacro:if value="$(optenv SENSOR_ARCH 0)">
+		<xacro:include filename="$(find p3at_description)/urdf/accessories/sensor_arch.urdf.xacro" />
+		<xacro:sensor_arch parent_link="top_plate" xyz="0 0 0" rpy = "0 0 0"/>
+	</xacro:if>
+
+	<xacro:if value="$(optenv ZED 0)">
+		<xacro:arg name="camera_name"   default="zed2" />
+		<xacro:arg name="camera_model"  default="zed2" />
+		<xacro:arg name="base_frame"    default="sensor_arch_top" />
+		<xacro:arg name="cam_pos_x"     default="0.0" />
+		<xacro:arg name="cam_pos_y"     default="0.0" />
+		<xacro:arg name="cam_pos_z"     default="0.1" />
+		<xacro:arg name="cam_roll"      default="0.0" />
+		<xacro:arg name="cam_pitch"     default="0.0" />
+		<xacro:arg name="cam_yaw"       default="0.0" />
+		<xacro:property name="model"    value="$(arg camera_model)" />
+
+		<joint name="$(arg camera_name)_camera_center_joint" type="fixed">
+			<parent link="$(arg base_frame)"/>
+			<child link="$(arg camera_name)_camera_center"/>
+			<origin xyz="$(arg cam_pos_x) $(arg cam_pos_y) $(arg cam_pos_z)" rpy="$(arg cam_roll) $(arg cam_pitch) $(arg cam_yaw)" />
+		</joint>
+
+		<link name="$(arg camera_name)_camera_center">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://zed_interfaces/meshes/${model}.stl" />
+				</geometry>
+				<material name="${model}_mat" />
+			</visual>
+		</link>
+	</xacro:if>
 </robot>

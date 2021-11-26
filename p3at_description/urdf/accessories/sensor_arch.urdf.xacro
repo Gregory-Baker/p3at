@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<xacro:macro name="sensor_arch" params="parent_link xyz rpy">
+
+        <link name="sensor_arch_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://p3at_description/meshes/p3at_meshes/sensor_arch.dae"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <!--material name="near_black"/-->
+        </visual>
+        </link>
+        <joint name="sensor_arch_joint" type="fixed">
+            <parent link="${parent_link}"/>
+            <child link="sensor_arch_base"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+        </joint>
+
+        <link name="sensor_arch_middle">
+        </link>
+        <joint name="sensor_arch_middle_joint" type="fixed">
+            <parent link="sensor_arch_base"/>
+            <child link="sensor_arch_middle"/>
+            <origin xyz="0 0 0.19" rpy="0 0 0"/>
+        </joint>
+
+        <link name="sensor_arch_top">
+        </link>
+        <joint name="sensor_arch_top_joint" type="fixed">
+            <parent link="sensor_arch_base"/>
+            <child link="sensor_arch_top"/>
+            <origin xyz="0 0 0.84" rpy="0 0 0"/>
+        </joint>
+
+	</xacro:macro>
+
+</robot>
