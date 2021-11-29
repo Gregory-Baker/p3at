@@ -6,6 +6,7 @@
   <arg name="unity" default="true" doc="spawn ros_tcp_endpoint for Unity link"/>
   <arg name="rviz" default="true" doc="spawn rviz"/>
   <arg name="rviz_config" default="map" unless="$(eval mapping == 'none')"/>
+  <arg name="rviz_config" value="scan" if="$(eval mapping == 'none')"/>
   <arg name="gripper" default="true" doc="spawn p3at gripper joystick node"/>
 
   <group if="$(arg joy)">

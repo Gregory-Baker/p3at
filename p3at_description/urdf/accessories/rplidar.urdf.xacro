@@ -24,7 +24,7 @@
 		</joint>
 
 		<link name="laser">
-    </link>
+    	</link>
 		<joint name="rplidar_laser" type="fixed">
 			<parent link="rplidar"/>
 			<child link="laser"/>
