@@ -47,6 +47,6 @@
     <node pkg="rosbag" type="record" name="rosbag_record_node"
         args="record 
         -o $(env HOME)/Experiment_Data/$(arg id)/$(arg camera)/$(arg task) 
-        /rosout /tf /odometry/filtered /map /scan /cmd_vel /head_rot /joy_teleop/joy"/>   
+        /rosout /tf /odometry/filtered /map /scan /cmd_vel /usb_cam/image_raw/compressed /head_rot /joy_teleop/joy"/>   
   </group>
 </launch>
