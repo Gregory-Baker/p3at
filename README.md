@@ -24,6 +24,7 @@ Specific to my requirements:
   <li>Write p3at_teensy sketch to Teensy 3.2 by following this tutorial: https://github.com/Gregory-Baker/p3at/tree/main/p3at_embedded</li>
   <li>Setup udev rules to name teensy MCU and arduino MCU /dev/teensy and /dev/arduino respectively [1]: <code>sudo wget -O /etc/udev/rules.d/40-p3at.rules https://github.com/Gregory-Baker/p3at/raw/main/p3at_resources/udev/40-p3at.rules</code>
   <li>Get base.launch to start on boot using command: <code>rosrun robot_upstart install p3at_base/launch/base.launch</code>.</li>
+  <li>Disable wifi power saving mode on Jetson boards: <code>sudo iw dev wlan0 set power_save off</code>.</li>
 </ol>
 
 [1] Otherwise they get assigned /dev/ttyACM[0 or 1] which causes confussion. Note, the way this is currently done would not be robust if multiple teensy's or multiple arduinos were being used simultaneously.
