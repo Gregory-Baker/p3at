@@ -19,7 +19,7 @@ On your Pioneer's onboard Jetson board:
   <li>Install rosserial_arduino ros package, using <code>sudo apt install ros-melodic-rosserial-arduino</code></li>
   <li>Make sure custom p3at_msgs have been generated - p3at_msgs package must be within catkin workspace, and then `catkin_make`</li>
   <li>Generate ros library for embedded platform following <a href="http://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup">this tutorial</a> [3].</li>
-  <li>Now install any additional library dependencies using the Arduino IDE - You will probably need PID_v2 (Max_Ignatenko) and Encoder (Paul Stoffregen) libraries.</li>
+  <li>Now install any additional library dependencies using the Arduino IDE - You will probably need PID_v2 (Max_Ignatenko), Encoder (Paul Stoffregen) and <a href="https://learn.adafruit.com/adafruit-9-dof-orientation-imu-fusion-breakout-bno085/arduino">Adafruit BN08x</a> libraries.</li>
   <li>Set the pin mapping in TeensyHW.h to the correct values (see section below) and tweak variable values in the sketch where necessary, e.g. ticksPerRev (number of encoder ticks per wheel revolution) is set to Pioneer 3 AT value, but may be different for other Pioneer models. </li>
   <li>Now compile and upload script to Teensy</li>
 </ol>
